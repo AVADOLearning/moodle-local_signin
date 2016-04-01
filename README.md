@@ -20,3 +20,7 @@ options:
 | --- | --- |
 | `alternateloginurl` | `/local/signin/login.php` |
 | `forgottenpasswordurl` | `/local/signin/forgot.php` |
+
+## To do
+
+* Implement the Moodle login process within this plugin.
