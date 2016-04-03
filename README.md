@@ -7,7 +7,7 @@ logging that's easier to theme.
 
 ## Installation
 
-1. Drop this repository into `/local/auth`.
+1. Drop this repository into `/local/signin`.
 2. Run the Moodle upgrade process.
 
 ## Configuration
