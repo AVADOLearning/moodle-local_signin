@@ -7,6 +7,8 @@
  * @copyright 2016 Floream Limited
  */
 
+use local_signin\event\password_reset_request_attempt;
+use local_signin\event\password_reset_request_complete;
 use local_signin\form\forgot_form;
 use local_signin\helper\recovery_helper;
 use local_signin\util;
@@ -14,7 +16,7 @@ use local_signin\util;
 require_once dirname(dirname(__DIR__)) . '/config.php';
 require_once "{$CFG->dirroot}/login/set_password_form.php";
 
-$flash = optional_param('flash', '', PARAM_ALPHANUM);
+$flash = optional_param('flash', -1, PARAM_INT);
 $token = optional_param('token', '', PARAM_ALPHANUM);
 
 $forgotten = get_string('passwordforgotten');
@@ -53,6 +55,17 @@ if ($token) {
     if ($values = $mform->get_data()) {
         $status = recovery_helper::set_password($reset, $values->password);
 
+        $guest = guest_user();
+        $event = password_reset_request_complete::create(array(
+            'userid'   => $guest->id,
+            'objectid' => $reset->resetid,
+            'other'    => array(
+                'username' => $values->username,
+                'status'   => $status,
+            ),
+        ));
+        $event->trigger();
+
         switch ($status) {
             case recovery_helper::STATUS_ERROR_UPDATING_PASSWORD:
                 print_error('errorpasswordupdate', 'auth');
@@ -85,6 +98,15 @@ if ($token) {
     if ($values = $mform->get_data()) {
         $user = $mform->locate_user();
         $status = recovery_helper::begin_recovery($user);
+
+        $guest = guest_user();
+        $event = password_reset_request_attempt::create(array(
+            'userid' => $guest->id,
+            'other'  => array_merge((array) $values, array(
+                'status' => $status,
+            )),
+        ));
+        $event->trigger();
 
         if ($CFG->protectusernames) {
             notice(get_string('emailpasswordconfirmmaybesent'), new moodle_url('/index.php'));
