@@ -30,6 +30,13 @@ class util {
     const SETTING_FORGOT_METHODS = 'forgotmethods';
 
     /**
+     * Setting: recovery status.
+     *
+     * @var string
+     */
+    const SETTING_STATUSES = 'statuses';
+
+    /**
      * Recovery method class name format.
      *
      * @var string

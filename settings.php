@@ -7,6 +7,7 @@
  * @copyright 2016 Floream Limited
  */
 
+use local_signin\admin\setting_static;
 use local_signin\util;
 
 defined('MOODLE_INTERNAL') || die;
@@ -24,6 +25,11 @@ defined('MOODLE_INTERNAL') || die;
             util::MOODLE_COMPONENT,
             new lang_string('pluginname', util::MOODLE_COMPONENT));
      $ADMIN->add('authsettings', $node);
+
+     $node->add(new setting_static(
+            util::MOODLE_COMPONENT . '/' . util::SETTING_STATUSES,
+            new lang_string('statuses', util::MOODLE_COMPONENT),
+            new lang_string('statuses_desc', util::MOODLE_COMPONENT)));
 
      $node->add(new admin_setting_configmulticheckbox(
              util::MOODLE_COMPONENT . '/' . util::SETTING_FORGOT_METHODS,

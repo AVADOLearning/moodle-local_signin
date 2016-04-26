@@ -65,6 +65,9 @@ class recovery_helper {
     /**
      * Recovery status: already sent.
      *
+     * A password reset request had already been sent and resent. Since it has
+     * not yet expired, no action was taken.
+     *
      * @var integer
      */
     const STATUS_ALREADY_SENT = 3;
@@ -79,7 +82,14 @@ class recovery_helper {
     const STATUS_ERROR = 4;
 
     /**
-     * Recovery status: no reset request with a matching token found.
+     * Recovery status: invalid token.
+     *
+     * No reset request with a matching reset token could be found. This is
+     * likely an indication that the user either incorrectly copied the URL from
+     * the email into their browser, or that the line in the email was somehow
+     * truncated. It could also mean that the token had been used or had expired
+     * and been removed from the password reset requests table before the user
+     * attempted to use it.
      *
      * @var integer
      */
@@ -87,6 +97,10 @@ class recovery_helper {
 
     /**
      * Recovery status: reset record exists, but has expired.
+     * 
+     * The user has waited too long to act on the reset token email and the
+     * token had expired. The old token has been removed and the user must
+     * re-attempt the password reset from the beginning.
      *
      * @var integer
      */
@@ -104,6 +118,8 @@ class recovery_helper {
 
     /**
      * Recovery status: attempting to change the guest user's password.
+     * 
+     * It is not coherent/possible to change the guest user's password.
      *
      * @var integer
      */
@@ -111,6 +127,9 @@ class recovery_helper {
 
     /**
      * Recovery status: reset token is valid.
+     * 
+     * The user's password reset token was successfully matched to an active
+     * reset record.
      *
      * @var integer
      */
@@ -119,12 +138,17 @@ class recovery_helper {
     /**
      * Recovery status: an error occurred updating the user's password.
      *
+     * An unknown error occurred in the user's authentication method attempting
+     * to reset the user's password.
+     *
      * @var integer
      */
     const STATUS_ERROR_UPDATING_PASSWORD = 10;
 
     /**
-     * Recovery status: password successfully reset.
+     * Recovery status: recovery complete.
+     * 
+     * Whew, finally! Password successfully reset.
      *
      * @var integer
      */

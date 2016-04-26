@@ -60,7 +60,8 @@ if ($token) {
             'userid'   => $guest->id,
             'objectid' => $reset->resetid,
             'other'    => array(
-                'username' => $values->username,
+                'userid'   => property_exists($reset, 'id')       ? $reset->id       : '<null>',
+                'username' => property_exists($reset, 'username') ? $reset->username : '<null>' ,
                 'status'   => $status,
             ),
         ));
@@ -78,8 +79,8 @@ if ($token) {
 
                 unset($SESSION->wantsurl);
                 redirect(
-                    core_login_get_return_url(),
-                    get_string('passwordset'));
+                        core_login_get_return_url(),
+                        get_string('passwordset'));
         }
     } else {
         $PAGE->verify_https_required();
@@ -102,9 +103,12 @@ if ($token) {
         $guest = guest_user();
         $event = password_reset_request_attempt::create(array(
             'userid' => $guest->id,
-            'other'  => array_merge((array) $values, array(
-                'status' => $status,
-            )),
+            'other'  => array(
+                'userid'   => property_exists($user, 'id')       ? $user->id       : '<null>',
+                'username' => property_exists($user, 'username') ? $user->username : '<null>' ,
+                'status'   => $status,
+                'values'   => (array) $values,
+            ),
         ));
         $event->trigger();
 

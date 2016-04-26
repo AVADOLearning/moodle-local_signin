@@ -11,6 +11,7 @@ namespace local_signin\event;
 
 use context_system;
 use core\event\base;
+use local_signin\util;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -29,5 +30,14 @@ class password_reset_request_attempt extends base {
 
         $this->data['crud']     = 'r';
         $this->data['edulevel'] = static::LEVEL_OTHER;
+    }
+
+    /**
+     * @override \core\event\base
+     */
+    public function get_description() {
+        return get_string(
+                'event_password_reset_request_attempt', util::MOODLE_COMPONENT,
+                (object) $this->data['other']);
     }
 }
