@@ -31,8 +31,17 @@ class forgot_form extends moodleform {
             throw new coding_exception('$customdata must contain the forgotmethods key');
         }
 
-        parent::moodleform($action, $customdata, $method, $target, $attributes,
-                           $editable);
+        // TODO: remove when we drop support for Moodle < 3.0
+        if (method_exists($this, '__construct')) {
+            parent::__construct(
+                    $action, $customdata, $method, $target, $attributes,
+                    $editable);
+        } else {
+            parent::moodleform(
+                    $action, $customdata, $method, $target, $attributes,
+                    $editable);
+        }
+
     }
 
     /**
