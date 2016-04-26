@@ -13,3 +13,5 @@ $plugin->component = 'local_signin';
 
 $plugin->version  = 2016040100;
 $plugin->maturity = MATURITY_ALPHA;
+
+$plugin->requires = 2014051200;
