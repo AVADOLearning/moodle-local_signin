@@ -39,7 +39,11 @@ class setting_static extends admin_setting {
     /**
      * @override \admin_setting
      */
-    public function get_setting() {}
+    public function get_setting() {
+        /* If we return a falsy value here, we'll trap administrative users in
+         * the upgrade settings routine. */
+        return true;
+    }
 
     /**
      * @override \admin_setting
