@@ -44,6 +44,20 @@ class util {
     const RECOVERY_METHOD_CLASS_FORMAT = '\local_signin\recovery_method\%s_recovery_method';
 
     /**
+     * AMD module: <iframe> sender.
+     *
+     * @var string
+     */
+    const AMD_IFRAME_SENDER = 'iframe-sender';
+
+    /**
+     * Mustache template: login form.
+     *
+     * @var string
+     */
+    const TEMPLATE_LOGIN_FORM = 'login_form';
+
+    /**
      * Recovery methods.
      *
      * @var \local_signin\recovery_method\recovery_method[]

@@ -97,7 +97,7 @@ class recovery_helper {
 
     /**
      * Recovery status: reset record exists, but has expired.
-     * 
+     *
      * The user has waited too long to act on the reset token email and the
      * token had expired. The old token has been removed and the user must
      * re-attempt the password reset from the beginning.
@@ -118,7 +118,7 @@ class recovery_helper {
 
     /**
      * Recovery status: attempting to change the guest user's password.
-     * 
+     *
      * It is not coherent/possible to change the guest user's password.
      *
      * @var integer
@@ -127,7 +127,7 @@ class recovery_helper {
 
     /**
      * Recovery status: reset token is valid.
-     * 
+     *
      * The user's password reset token was successfully matched to an active
      * reset record.
      *
@@ -147,7 +147,7 @@ class recovery_helper {
 
     /**
      * Recovery status: recovery complete.
-     * 
+     *
      * Whew, finally! Password successfully reset.
      *
      * @var integer
@@ -346,9 +346,9 @@ SQL;
     /**
      * Get the flash message for the given status.
      *
-     * @param $status
+     * @param integer $status
      *
-     * @return null
+     * @return string
      */
     public static function get_flash_message($status) {
         switch ($status) {

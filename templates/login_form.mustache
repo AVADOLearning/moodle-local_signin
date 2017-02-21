@@ -1,0 +1,42 @@
+<form action="{{action}}" method="post" class="local-signin-form form-horizontal">
+  <input name="sesskey" type="hidden" value="{{sesskey}}" />
+
+  {{#error}}
+    {{error}}
+  {{/error}}
+
+  <div class="local-signin-signin">
+    <div class="form-label">
+      <label for="username">Email</label>
+    </div>
+    <div class="form-input">
+      <input type="text" name="username" id="username" class="input-block-level" size="15" value="" placeholder="Email" />
+    </div>
+
+    <div class="clearer"></div>
+
+    <div class="form-label">
+      <label for="password">Password</label>
+    </div>
+    <div class="form-input">
+      <input type="password" name="password" id="password" class="input-block-level" size="15" value="" placeholder="Password" />
+    </div>
+
+    <div class="form-actions">
+      <input type="submit" id="loginbtn" value="Log in" />
+    </div>
+  </div>
+
+  <div class="clearer"></div>
+
+  <div class="local-signin-remember">
+    <input type="checkbox" name="rememberusername" id="rememberusername" value="1"  />
+    <label for="rememberusername">Remember email</label>
+  </div>
+
+  <div class="clearer"></div>
+
+  <div class="local-signin-forget">
+    <a href="https://learn.unitedforwildlife.org/login/forgot_password.php">Forgotten your username or password?</a>
+  </div>
+</form>
