@@ -98,3 +98,17 @@ $string['emailpasswordconfirmsent'] = 'An email should have been sent to your re
 // Event descriptions
 $string['event_password_reset_request_attempt']  = 'A password reset request for \'{$a->username}\' ({$a->userid}) was requested; with status \'{$a->status}\'.';
 $string['event_password_reset_request_complete'] = 'A password reset request for \'{$a->username}\' ({$a->userid}) was completed; with status \'{$a->status}\'.';
+
+// Username form settings
+$string['form_username_label']        = 'Username';
+$string['form_username_placeholder']  = 'Username';
+$string['form_username_class']        = 'input-block-level';
+$string['form_username_button_label'] = 'Proceed';
+$string['form_username_button_class'] = 'waves-button-input';
+
+// Password form settings
+$string['form_password_label']        = 'Password';
+$string['form_password_placeholder']  = 'Password';
+$string['form_password_class']        = 'input-block-level';
+$string['form_password_button_label'] = 'Log In';
+$string['form_password_button_class'] = 'waves-button-input';
