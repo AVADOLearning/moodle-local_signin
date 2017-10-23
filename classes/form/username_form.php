@@ -15,8 +15,6 @@ use moodleform;
 
 defined('MOODLE_INTERNAL') || die;
 
-global $CFG;
-
 require_once "{$CFG->libdir}/formslib.php";
 
 class username_form extends moodleform {
@@ -24,23 +22,46 @@ class username_form extends moodleform {
      * @override \moodleform
      */
     public function definition() {
+        global $frm;
+
         $mform  = $this->_form;
 
-        $returnurl = optional_param('returnurl', '', PARAM_URL);
+        $username = '';
+        if (isset($frm) && isset($frm->username) && $frm->username) {
+            $username = $frm->username;
+        }
 
         $user_attributes = array('placeholder'   => $this->lang_string('form_username_placeholder'),
-                                 'additionalcss' => $this->lang_string('form_username_button_class'));
+                                 'additionalcss' => $this->lang_string('form_username_button_class'),
+                                 'autofocus'     => '',
+                                 'value'         => $username);
         $mform->addElement('text', 'username', $this->lang_string('form_username_label'), $user_attributes);
         $mform->setType('username', PARAM_RAW);
 
+        $returnurl = optional_param('returnurl', '', PARAM_URL);
         $mform->addElement('hidden', 'returnurl', $returnurl);
         $mform->setType('returnurl', PARAM_URL);
 
         $submit_attributes = array('additionalcss' => $this->lang_string('form_username_button_class'));
         $mform->addElement('submit', 'submitusername', $this->lang_string('form_username_button_label'), $submit_attributes);
+
+        $mform->addElement('html', sprintf('<div class="%s">', $this->lang_string('form_username_remusername_class')));
+        $mform->addElement('advcheckbox', 'rememberme', '', $this->lang_string('form_username_remusername_label'));
+        $mform->addElement('html', '</div>');
+
+        $mform->addElement('html', sprintf('<div class="%s"><a href="%s">%s</a></div>',
+            $this->lang_string('form_userpass_forgot_class'),
+            new \moodle_url('/local/signin/forgot.php'),
+            $this->lang_string('form_username_forgot_label')));
     }
 
     public function lang_string($id) {
         return get_string($id, util::MOODLE_COMPONENT);
+    }
+
+    public function validation($data, $files) {
+        if (array_key_exists('username', $data) && strlen($data['username']) == 0) {
+            return array('username' => 'Must validate username');
+        }
     }
 }
