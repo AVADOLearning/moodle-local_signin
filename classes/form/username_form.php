@@ -18,6 +18,23 @@ defined('MOODLE_INTERNAL') || die;
 require_once "{$CFG->libdir}/formslib.php";
 
 class username_form extends moodleform {
+    const DEFAULT_DOMAIN_FROM_USERNAME = <<<SQL
+SELECT
+  bd.domain
+FROM
+  {user} u
+INNER JOIN
+  {cohort_members} cm ON u.id = cm.userid
+INNER JOIN
+  {brandmanager_brand_cohort} bc ON cm.cohortid = bc.cohortid
+INNER JOIN
+  {brandmanager_brand_domain} bd ON bc.brandid = bd.brandid
+WHERE
+  (u.username = :username
+AND
+  bd.defaultdomain = 1)
+SQL;
+
     /**
      * @override \moodleform
      */
@@ -58,9 +75,73 @@ class username_form extends moodleform {
         return get_string($id, util::MOODLE_COMPONENT);
     }
 
+    /**
+     * Validate the username field.
+     *
+     * @param array $data
+     * @param array $files
+     * @return mixed
+     */
     public function validation($data, $files) {
-        if (array_key_exists('username', $data) && strlen($data['username']) == 0) {
-            return array('username' => $this->lang_string('form_username_not_provided'));
+        global $CFG;
+
+        // A username field must exist in the form data.
+        if (array_key_exists('username', $data)) {
+            $username = $data['username'];
+
+            // Error if the username is empty string.
+            if (strlen($username) == 0) {
+                return array('username' => $this->lang_string('form_username_not_provided'));
+            } else {
+                // Return/exit if the username is 'guest'.
+                if ($username == 'guest') {
+                    return;
+                }
+
+                // The non-guest username must exist in the campus database.
+                if (static::user_exists($username)) {
+                    // The user must have a brand association via a cohort.
+                    if (static::get_default_domain($username) != null) {
+                        // Redirect the user if they are on the wrong domain.
+                        $correct_domain = static::get_default_domain($username)->domain;
+                        if ('http://' . $correct_domain != $CFG->wwwroot) {
+                            $url = 'http://' . $correct_domain . '/local/signin/index.php&username=' . $username;
+                            redirect($url);
+                        // Return/exit if the user is already on the right domain.
+                        } else {
+                            return;
+                        }
+                    // Return/exit if the user exists but has no brand association via a cohort.
+                    } else {
+                        return;
+                    }
+                // Error if username does not exist in the campus database.
+                } else {
+                    return array('username' => $this->lang_string('form_username_not_found'));
+                }
+            }
         }
+    }
+
+    /**
+     * Return default domain for a given username (via cohort and brand).
+     *
+     * @param $username
+     * @return mixed
+     */
+    public static function get_default_domain($username) {
+        global $DB;
+        return $DB->get_record_sql(static::DEFAULT_DOMAIN_FROM_USERNAME, array('username' => $username));
+    }
+
+    /**
+     * Confirms whether a username exists in the database.
+     *
+     * @param $username
+     * @return boolean
+     */
+    public static function user_exists($username) {
+        global $DB;
+        return $DB->record_exists('user', array('username' => $username));
     }
 }

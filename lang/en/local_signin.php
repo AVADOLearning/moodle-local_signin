@@ -108,6 +108,7 @@ $string['form_username_button_class']      = 'waves-button-input';
 $string['form_username_remusername_class'] = 'rememberpass';
 $string['form_username_remusername_label'] = 'Remember username';
 $string['form_username_not_provided']      = 'Please provide a user name';
+$string['form_username_not_found']         = 'This username does not exist in this campus';
 
 // Password form settings
 $string['form_password_label']        = 'Password';
