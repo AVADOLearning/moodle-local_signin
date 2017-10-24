@@ -30,7 +30,6 @@ class password_form extends moodleform {
         if (isset($frm) && isset($frm->username) && $frm->username) {
             $username = $frm->username;
         }
-
         $user_attributes = array('placeholder'   => $this->lang_string('form_username_placeholder'),
                                  'additionalcss' => $this->lang_string('form_username_button_class'),
                                  'readonly'      => '',
@@ -43,6 +42,16 @@ class password_form extends moodleform {
                                  'autofocus'     => '');
         $mform->addElement('password', 'password', $this->lang_string('form_password_label'), $pass_attributes);
         $mform->setType('password', PARAM_RAW);
+
+        $mform->addElement('hidden', 'rememberme', 0);
+        $mform->setType('rememberme', PARAM_INT);
+
+        $returnurl = '';
+        if (isset($frm) && isset($frm->returnurl) && $frm->returnurl) {
+            $returnurl = $frm->returnurl;
+        }
+        $mform->addElement('hidden', 'returnurl', $returnurl);
+        $mform->setType('returnurl', PARAM_URL);
 
         $submit_attributes = array('additionalcss' => $this->lang_string('form_password_button_class'));
         $mform->addElement('submit', 'submitpassword', $this->lang_string('form_password_button_label'), $submit_attributes);

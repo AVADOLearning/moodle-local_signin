@@ -128,6 +128,7 @@ class login_helper {
         /// Check for timed out sessions
         if (!empty($SESSION->has_timed_out)) {
             unset($SESSION->has_timed_out);
+            set_moodle_cookie('');
             notification::error(get_string('sessionerroruser', 'error'));
         }
     }
@@ -375,11 +376,11 @@ class login_helper {
     }
 
     /**
-     * Set the global variable information
+     * Set the username form parameters into the global frm variable
      *
      * @param \stdClass|null $data
      */
-    public function set_username_in_auth_global_vars($data = null) {
+    public function set_userform_params_in_auth_global_vars($data = null) {
         global $frm;
 
         if (!$data) {
@@ -388,20 +389,22 @@ class login_helper {
 
         $frm->username = $data->username;
         $frm->rememberme = $data->rememberme;
+        $frm->returnurl = $data->returnurl;
     }
 
     /**
-     * Get the username global variable
+     * Get the username form parameters from the global frm variable
      *
-     * @return string
+     * @return array(string, integer, url)
      */
-    public function get_username_in_auth_global_vars() {
+    public function get_userform_params_from_auth_global_vars() {
         global $frm;
 
         if (isset($frm) && isset($frm->username) && $frm && $frm->username) {
-            return $frm->username;
+            return array($frm->username, $frm->rememberme, $frm->returnurl);
         };
-        return '';
+
+        return array('', 0, '');
     }
 
     public function get_username_from_querystring_or_cookie() {
@@ -415,7 +418,12 @@ class login_helper {
         return '';
     }
 
-    public function set_password_in_auth_global_vars($data) {
+    /**
+     * Set the password form parameters into the global frm variable
+     *
+     * @param \stdClass|null $data
+     */
+    public function set_passform_params_in_auth_global_vars($data) {
         global $frm;
 
         if (!$data) {
@@ -424,6 +432,8 @@ class login_helper {
 
         $frm->username = $data->username;
         $frm->password = $data->password;
+        $frm->rememberme = $data->rememberme;
+        $frm->returnurl = $data->returnurl;
     }
 
     public function is_username_set_in_auth_global_vars() {

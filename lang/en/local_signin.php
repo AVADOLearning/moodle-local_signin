@@ -100,13 +100,14 @@ $string['event_password_reset_request_attempt']  = 'A password reset request for
 $string['event_password_reset_request_complete'] = 'A password reset request for \'{$a->username}\' ({$a->userid}) was completed; with status \'{$a->status}\'.';
 
 // Username form settings
-$string['form_username_label']                = 'Username';
-$string['form_username_placeholder']          = 'Username';
-$string['form_username_class']                = 'input-block-level';
-$string['form_username_button_label']         = 'Proceed';
-$string['form_username_button_class']         = 'waves-button-input';
-$string['form_username_remusername_class']    = 'rememberpass';
-$string['form_username_remusername_label']    = 'Remember username';
+$string['form_username_label']             = 'Username';
+$string['form_username_placeholder']       = 'Username';
+$string['form_username_class']             = 'input-block-level';
+$string['form_username_button_label']      = 'Proceed';
+$string['form_username_button_class']      = 'waves-button-input';
+$string['form_username_remusername_class'] = 'rememberpass';
+$string['form_username_remusername_label'] = 'Remember username';
+$string['form_username_not_provided']      = 'Please provide a user name';
 
 // Password form settings
 $string['form_password_label']        = 'Password';
@@ -121,5 +122,5 @@ $string['form_password_changeusername_label'] = 'Change your username?';
 
 // Forgot form settings
 $string['form_userpass_forgot_class'] = 'forgotpass';
-$string['form_username_forgot_label'] = 'Forgotton your username?';
-$string['form_password_forgot_label'] = 'Forgotton your password?';
+$string['form_username_forgot_label'] = 'Forgotten your username?';
+$string['form_password_forgot_label'] = 'Forgotten your password?';

@@ -47,7 +47,7 @@ $helper->auth_plugin_bootstrapper();
 $username_form = new \local_signin\form\username_form();
 $password_form = new \local_signin\form\password_form();
 
-// If true, a auth plugin has filled out the form on behalf of the user
+// If true, an auth plugin has filled out the form on behalf of the user
 // See auth_plugin_bootstrapper function
 if (!$helper->is_auth_global_vars_populated()) {
     $helper->create_new_user_object();
@@ -56,15 +56,34 @@ if (!$helper->is_auth_global_vars_populated()) {
     if ($username_form->is_submitted() &&
         $username_form->is_validated()) {
         $values = $username_form->get_data();
-        $helper->set_username_in_auth_global_vars($values);
+        $helper->set_userform_params_in_auth_global_vars($values);
 
         // Need to parse the username field to the password form
-        $password_form->set_data(array('username' => $helper->get_username_in_auth_global_vars()));
+        list($username, $rememberme, $returnurl) = $helper->get_userform_params_from_auth_global_vars();
+        $password_form->set_data(array(
+            'username' => $username,
+            'rememberme' => $rememberme,
+            'returnurl' => $returnurl
+        ));
     }
+
+    // If user is not logged in but cookie exists (because 'remember me' has been previously checked),
+    // set the form data so that the user goes straight to password form
+    if (get_moodle_cookie()) {
+        global $frm;
+        $username = $helper->get_username_from_querystring_or_cookie();
+        $frm->username = $username;
+        $password_form->set_data(array(
+            'username' => $username,
+            'rememberme' => 1,
+            'returnurl' => $helper->get_return_url()
+        ));
+    }
+
     if ($password_form->is_submitted() &&
         $password_form->is_validated()) {
         $values = $password_form->get_data();
-        $helper->set_password_in_auth_global_vars($values);
+        $helper->set_passform_params_in_auth_global_vars($values);
     }
 }
 
