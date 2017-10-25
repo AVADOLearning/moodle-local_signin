@@ -210,7 +210,7 @@ class login_helper {
             return false;
         }
 
-        if ($frm && isset($frm->username) && isset($frm->password)) {
+        if ($frm && isset($frm->username)) {
             $frm->username = trim(\core_text::strtolower($frm->username));
 
             if (is_enabled_auth('none')) {
@@ -229,10 +229,17 @@ class login_helper {
                 $frm = false;
             }
 
-            // Authenticate normally
-            $user = authenticate_user_login($frm->username, $frm->password);
-            if (!$user) {
-                notification::error(get_string("invalidlogin"));
+            // Set password for guest and authenticate them.
+            // Only authenticate non-guests if they have a set and non-empty password.
+            if ($frm->username == 'guest') {
+                $frm->password = 'guest';
+            }
+
+            if (isset($frm->password) && $frm->password) {
+                $user = authenticate_user_login($frm->username, $frm->password);
+                if (!$user) {
+                    notification::error(get_string("invalidlogin"));
+                }
             }
         }
 
@@ -246,7 +253,7 @@ class login_helper {
                 unset($SESSION->lang);
             }
 
-            // If the user needs to be confirm, exit early
+            // If the user needs to be confirmed, exit early
             list($confirm, $email) = $this->user_needs_to_confirm_account();
             if ($confirm) {
                 return false;
