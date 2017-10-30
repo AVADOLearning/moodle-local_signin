@@ -121,7 +121,11 @@ $string['form_password_button_class'] = 'waves-button-input';
 $string['form_password_changeusername_class'] = 'changeuser';
 $string['form_password_changeusername_label'] = 'Change your username?';
 
-// Forgot form settings
+// Forgotten username or password form settings
 $string['form_userpass_forgot_class'] = 'forgotpass';
 $string['form_username_forgot_label'] = 'Forgotten your username?';
 $string['form_password_forgot_label'] = 'Forgotten your password?';
+$string['email_required'] = 'An email address is required.';
+$string['username_required'] = 'An username is required.';
+$string['form_page_title'] = 'Forgotten username or password';
+

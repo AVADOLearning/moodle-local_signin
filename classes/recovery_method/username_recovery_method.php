@@ -10,6 +10,7 @@
 namespace local_signin\recovery_method;
 
 use core_text;
+use local_signin\util;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -50,7 +51,7 @@ class username_recovery_method extends abstract_recovery_method
         $errors = array();
 
         if (!$data['username']) {
-            $errors['username'] = get_string('required');
+            $errors['username'] = get_string('username_required', util::MOODLE_COMPONENT);
         } else {
             $user = get_complete_user_data('username', $data['username']);
 

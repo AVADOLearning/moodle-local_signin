@@ -35,7 +35,7 @@ class password_form extends moodleform {
                                  'readonly'      => '',
                                  'value'         => $username);
         $mform->addElement('text', 'username', $this->lang_string('form_username_label'), $user_attributes);
-        $mform->setType('username', PARAM_RAW);
+        $mform->setType('username', PARAM_USERNAME);
 
         $pass_attributes = array('placeholder'   => $this->lang_string('form_password_placeholder'),
                                  'additionalcss' => $this->lang_string('form_password_button_class'),

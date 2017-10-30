@@ -9,6 +9,8 @@
 
 namespace local_signin\recovery_method;
 
+use local_signin\util;
+
 defined('MOODLE_INTERNAL') || die;
 
 /**
@@ -65,7 +67,7 @@ SQL;
         $errors = array();
 
         if (!$data['email']) {
-            $errors['email'] = get_string('required');
+            $errors['email'] = get_string('email_required', util::MOODLE_COMPONENT);
         } elseif (!validate_email($data['email'])) {
             $errors['email'] = get_string('invalidemail');
         } elseif ($DB->count_records('user', array('email' => $data['email'])) > 1) {

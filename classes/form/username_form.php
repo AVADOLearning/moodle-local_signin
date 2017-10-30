@@ -35,7 +35,7 @@ class username_form extends moodleform {
                                  'autofocus'     => '',
                                  'value'         => $username);
         $mform->addElement('text', 'username', $this->lang_string('form_username_label'), $user_attributes);
-        $mform->setType('username', PARAM_RAW);
+        $mform->setType('username', PARAM_USERNAME);
 
         $returnurl = optional_param('returnurl', '', PARAM_URL);
         $mform->addElement('hidden', 'returnurl', $returnurl);
@@ -83,7 +83,7 @@ class username_form extends moodleform {
         }
 
         if (class_exists('bmdisco_domain\brand_domain')) {
-            $correct_domain = brand_domain::get_default_domain($username)->domain;
+            $correct_domain = brand_domain::get_default_domain($username) ? brand_domain::get_default_domain($username)->domain : '';
             if ($correct_domain) {
                 $current_domain = parse_url($CFG->wwwroot, PHP_URL_HOST);
                 if ($current_domain !== $correct_domain) {
@@ -97,7 +97,7 @@ class username_form extends moodleform {
     }
 
     /**
-     * Confirms whether a username exists in the database.
+     * Confirms whether the username belongs to an active user (neither deleted, nor suspended).
      *
      * @param $username
      * @return boolean

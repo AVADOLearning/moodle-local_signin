@@ -19,7 +19,7 @@ require_once "{$CFG->dirroot}/login/set_password_form.php";
 $flash = optional_param('flash', -1, PARAM_INT);
 $token = optional_param('token', '', PARAM_ALPHANUM);
 
-$forgotten = get_string('passwordforgotten');
+$forgotten = get_string('form_page_title', util::MOODLE_COMPONENT);
 $login     = get_string('login');
 
 $PAGE->https_required();
@@ -98,19 +98,21 @@ if ($token) {
 
     if ($values = $mform->get_data()) {
         $user = $mform->locate_user();
-        $status = recovery_helper::begin_recovery($user);
+        if ($user) {
+            $status = recovery_helper::begin_recovery($user);
 
-        $guest = guest_user();
-        $event = password_reset_request_attempt::create(array(
-            'userid' => $guest->id,
-            'other'  => array(
-                'userid'   => property_exists($user, 'id')       ? $user->id       : '<null>',
-                'username' => property_exists($user, 'username') ? $user->username : '<null>' ,
-                'status'   => $status,
-                'values'   => (array) $values,
-            ),
-        ));
-        $event->trigger();
+            $guest = guest_user();
+            $event = password_reset_request_attempt::create(array(
+                'userid' => $guest->id,
+                'other'  => array(
+                    'userid'   => property_exists($user, 'id')       ? $user->id       : '<null>',
+                    'username' => property_exists($user, 'username') ? $user->username : '<null>' ,
+                    'status'   => $status,
+                    'values'   => (array) $values,
+                ),
+            ));
+            $event->trigger();
+        }
 
         if ($CFG->protectusernames) {
             notice(get_string('emailpasswordconfirmmaybesent'), new moodle_url('/index.php'));

@@ -188,8 +188,9 @@ class login_helper {
      *
      * @return array(bool, string)
      */
-    public function user_needs_to_confirm_account() {
-        global $user;
+    public function user_needs_to_confirm_account($username = '') {
+        global $DB;
+        $user = $DB->get_record('user', array('username' => $username));
         if (isset($user) && $user && !$user->confirmed) {
             return array(true, $user->email);
         } else {

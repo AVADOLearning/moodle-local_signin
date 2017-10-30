@@ -47,6 +47,8 @@ $helper->auth_plugin_bootstrapper();
 $username_form = new \local_signin\form\username_form();
 $password_form = new \local_signin\form\password_form();
 
+$username = '';
+
 // If true, an auth plugin has filled out the form on behalf of the user
 // See auth_plugin_bootstrapper function
 if (!$helper->is_auth_global_vars_populated()) {
@@ -90,14 +92,14 @@ if (!$helper->is_auth_global_vars_populated()) {
 if ($helper->authenticate()) {
     if ($helper->user_needs_to_change_their_password()) {
         // Gives the user a chance to change their password
-        redirect(new moodle_url('/local/expired_user.php'));
+        redirect(new moodle_url('/local/signin/expired_user.php'));
     }
 
     $helper->set_remember_me();
     redirect($helper->get_return_url());
 } else {
     // The user object is populated if exited at correct stage
-    list($confirm, $email) = $helper->user_needs_to_confirm_account();
+    list($confirm, $email) = $helper->user_needs_to_confirm_account($username);
     if ($confirm) {
         $PAGE->set_title(get_string('mustconfirm'));
         echo $OUTPUT->header();
