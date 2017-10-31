@@ -61,6 +61,22 @@ class login_helper {
     }
 
     /**
+     * Sets a specific auth plugin. Only use this function for testing purposes.
+     *
+     * To use in unit testing, create new instance with 'login_helper(false)'
+     * so no auth plugins are automatically loaded, then have your instance
+     * '->use_auth_plugin($plugin_object)'.
+     *
+     * @param $plugin
+     *
+     * @return void
+     */
+    public function use_auth_plugin($plugin) {
+        $this->authplugins[] = $plugin;
+        $this->currentauth = $plugin;
+    }
+
+    /**
      * Have any notifications been raised?
      *
      * @return bool
