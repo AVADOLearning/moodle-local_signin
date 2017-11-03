@@ -19,16 +19,13 @@ Feature: Log in to platform
       | cht2     | Cohort 2 |
     And I add "student1@example.com" user to "Cohort 1" cohort members
     And I add "student2@example.com" user to "Cohort 2" cohort members
-
-#    And I navigate to "Brand Manager" node in "Site administration > Brand Manager"
-#    And I press "New brand"
     And I visit the local URL "/local/brandmanager/manage_brand.php?"
-
     And I set the following fields to these values:
       | Name | Brand1 |
     And I press "Save changes"
     And I click on "Manage brand cohorts" "link" in the "Brand1" "table_row"
     And I should see "Manage brand cohorts"
+
     And I expand the "Selected Cohorts" autocomplete menu
     And I click on "Cohort 1" item in the autocomplete menu
     And I press "Save changes"
@@ -55,23 +52,26 @@ Feature: Log in to platform
       | domain | otherdomain.net |
     And I press "Save changes"
     And I log out
-    And I visit the local URL "/local/signin/index.php"
+    And I visit the local URL "/local/signin/index.php?nojs=1"
 
   @javascript
   Scenario: 01. The login page first displays all the elements of the username form.
     Given I should see "Username"
+    And I should not see "Password"
     And "username" "field" should exist
+    And "password" "field" should exist
     And I should see "Remember username"
     And "rememberme" "checkbox" should exist
-    And "Proceed" "button" should exist
+    And "submitusername" "button" should exist
+    And "submitpassword" "button" should exist
     And "Forgotten your username?" "link" should exist
 
   @javascript
   Scenario: 02. Failing to provide a username triggers a notification and does not advance the signin process.
     Given I press "Proceed"
     Then I should see "This username does not exist or it is not active"
-    And "username" "field" should exist
-    And "password" "field" should not exist
+    And I should see "Username"
+    And I should not see "Password"
     And the URL path should be "/behat/local/signin/index.php"
 
   @javascript
@@ -79,8 +79,8 @@ Feature: Log in to platform
     Given I set the field "username" to "ghost"
     And I press "Proceed"
     Then I should see "This username does not exist or it is not active"
-    And "username" "field" should exist
-    And "password" "field" should not exist
+    And I should see "Username"
+    And I should not see "Password"
     And the URL path should be "/behat/local/signin/index.php"
 
   @javascript
@@ -88,8 +88,8 @@ Feature: Log in to platform
     Given I set the field "username" to "suspender"
     And I press "Proceed"
     Then I should see "This username does not exist or it is not active"
-    And "username" "field" should exist
-    And "password" "field" should not exist
+    And I should see "Username"
+    And I should not see "Password"
     And the URL path should be "/behat/local/signin/index.php"
 
   @javascript
@@ -97,8 +97,8 @@ Feature: Log in to platform
     Given I set the field "username" to "deleter"
     And I press "Proceed"
     Then I should see "This username does not exist or it is not active"
-    And "username" "field" should exist
-    And "password" "field" should not exist
+    And I should see "Username"
+    And I should not see "Password"
     And the URL path should be "/behat/local/signin/index.php"
 
   @javascript
@@ -107,9 +107,7 @@ Feature: Log in to platform
     And I press "Proceed"
     Then I should see "You need to confirm your login"
     And I should not see "Username"
-    And "username" "field" should not exist
     And I should not see "Password"
-    And "password" "field" should not exist
     And the URL path should be "/behat/local/signin/index.php"
 
   @javascript

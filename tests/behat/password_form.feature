@@ -148,6 +148,4 @@ Feature: Log in to platform
     And I press "Log In"
     Then the URL path should be "/behat/user/profile.php"
 
-#  Scenario: xx. Provide an expired password.
-
 

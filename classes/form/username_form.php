@@ -83,7 +83,8 @@ class username_form extends moodleform {
         }
 
         if (class_exists('bmdisco_domain\brand_domain')) {
-            $correct_domain = brand_domain::get_default_domain($username) ? brand_domain::get_default_domain($username)->domain : '';
+            $correct_domain = brand_domain::get_user_default_domain_obj($username, true) ?
+                brand_domain::get_user_default_domain_obj($username, true)->domain : '';
             if ($correct_domain) {
                 $current_domain = parse_url($CFG->wwwroot, PHP_URL_HOST);
                 if ($current_domain !== $correct_domain) {

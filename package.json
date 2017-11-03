@@ -1,0 +1,27 @@
+{
+  "name": "moodle-local_signin",
+  "version": "0.1.0",
+  "description": "new signin process for brandmanager",
+  "main": "gulpfile.js",
+  "private": true,
+  "scripts": {
+    "build": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gulp": "gulp"
+  },
+  "keywords": [
+    "moodle"
+  ],
+  "author": [
+    {
+      "name": "Luke Carrier",
+      "email": "luke.carrier@avadolearning.com"
+    }
+  ],
+  "license": "GPL-3.0+",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.4"
+  }
+}

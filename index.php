@@ -14,6 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+use local_signin\form\password_form;
+use local_signin\form\username_form;
+
 require_once dirname(dirname(__DIR__)) . '/config.php';
 
 redirect_if_major_upgrade_required();
@@ -44,8 +47,8 @@ $helper->handle_session_timeout();
 $helper->reset_auth_global_vars();
 $helper->auth_plugin_bootstrapper();
 
-$username_form = new \local_signin\form\username_form();
-$password_form = new \local_signin\form\password_form();
+$username_form = new username_form();
+$password_form = new password_form();
 
 $username = '';
 
@@ -125,12 +128,19 @@ if ($helper->authenticate()) {
 
 echo $OUTPUT->header();
 
+$nojs = optional_param('nojs', 0, PARAM_BOOL);
+if (!$nojs) {
+    $PAGE->requires->js_call_amd('local_signin/login', 'init');
+}
+
 if ($helper->is_username_set_in_auth_global_vars()) {
     $password_form->display();
 } else {
-    $username_form->set_data(array('username' =>
-        $helper->get_username_from_querystring_or_cookie()));
-    $username_form->display();
+    $username_form->set_data(array('username' => $helper->get_username_from_querystring_or_cookie()));
+    $templatecontext = new stdClass();
+    $templatecontext->username_form = $username_form->render();
+    $templatecontext->password_form = $password_form->render();
+    echo $OUTPUT->render_from_template('local_signin/login', $templatecontext);
 }
 
 echo $OUTPUT->footer();

@@ -120,6 +120,8 @@ $string['form_password_button_class'] = 'waves-button-input';
 // Wrong username settings
 $string['form_password_changeusername_class'] = 'changeuser';
 $string['form_password_changeusername_label'] = 'Change your username?';
+$string['invalid_user']                       = 'That username/email doesn\'t look quite right, please double-check and try again.';
+$string['non_existent_user']                  = 'That username does not seem to exist.';
 
 // Forgotten username or password form settings
 $string['form_userpass_forgot_class'] = 'forgotpass';

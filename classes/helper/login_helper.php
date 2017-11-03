@@ -201,7 +201,7 @@ class login_helper {
 
     /**
      * Does the user need to confirm their account?
-     *
+     * @param string $username
      * @return array(bool, string)
      */
     public function user_needs_to_confirm_account($username = '') {
