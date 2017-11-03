@@ -123,7 +123,16 @@ if ($helper->authenticate()) {
     }
 }
 
-echo $OUTPUT->header();
+echo $OUTPUT->header(),
+    html_writer::tag(
+        'button', 'Sign In',
+        array(
+            'id' => 'btn-login',
+            'style' => implode('; ', array(
+                'font-size: 24px',
+                'line-height: 30px',
+            )),
+        ));
 
 if ($helper->is_username_set_in_auth_global_vars()) {
     $password_form->display();
