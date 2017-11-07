@@ -44,7 +44,7 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
                     form       : $usernameContainer.find('form'),
                     input      : $usernameContainer.find($options.username.input),
                     rememberme : $usernameContainer.find($options.username.rememberme),
-                    returnurl : $usernameContainer.find($options.username.returnurl),
+                    returnurl  : $usernameContainer.find($options.username.returnurl),
                     submit     : $usernameContainer.find($options.username.submit)
                 },
                 password : {
@@ -53,7 +53,7 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
                     username   : $passwordContainer.find($options.username.input),
                     input      : $passwordContainer.find($options.password.input),
                     rememberme : $passwordContainer.find($options.password.rememberme),
-                    returnurl : $passwordContainer.find($options.password.returnurl),
+                    returnurl  : $passwordContainer.find($options.password.returnurl),
                     submit     : $passwordContainer.find($options.password.submit),
                     changeuser : $passwordContainer.find($options.password.changeuser)
                 }

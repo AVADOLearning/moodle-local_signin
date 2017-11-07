@@ -87,9 +87,9 @@ class username_form extends moodleform {
             $correct_domain = brand_domain::get_user_default_domain_obj($username, true) ?
                 brand_domain::get_user_default_domain_obj($username, true)->domain : '';
             if ($correct_domain) {
-                $current_domain = parse_url($CFG->wwwroot, PHP_URL_HOST);
-                if ($current_domain !== $correct_domain) {
-                    $url = new \moodle_url(str_replace($current_domain, $correct_domain, $PAGE->url), array('username' => $username));
+                $current_url = parse_url($CFG->wwwroot, PHP_URL_HOST);
+                if ($current_url !== $correct_domain) {
+                    $url = new \moodle_url(str_replace($current_url, $correct_domain, $PAGE->url), array('username' => $username));
                     redirect($url);
                 }
             }

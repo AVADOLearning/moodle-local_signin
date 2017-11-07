@@ -78,7 +78,7 @@ Feature: Log in to platform
     And I press "Proceed"
     Then I should see "http://otherdomain/behat/local/signin/index.php?username=student2"
 
-#    TODO: Needs alternate test invironment to be sent to.
+#    TODO: Needs alternate test environment to be sent to.
 #    Then I should see "Username"
 #    And I should see "Proceed"
 

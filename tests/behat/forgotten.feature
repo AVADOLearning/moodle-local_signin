@@ -17,11 +17,7 @@ Feature: Forgotten username
       | idnumber | name     |
       | cht1     | Cohort 1 |
     And I add "student1@example.com" user to "Cohort 1" cohort members
-
-#    And I navigate to "Brand Manager" node in "Site administration > Brand Manager"
-#    And I press "New brand"
     And I visit the local URL "/local/brandmanager/manage_brand.php?"
-
     And I set the following fields to these values:
       | Name | Brand1 |
     And I press "Save changes"
@@ -47,7 +43,7 @@ Feature: Forgotten username
     And I should see "Search by email address"
     And "username" "field" should exist
     And "email" "field" should exist
-    And the URL path should be "/behat/local/signin/forgot.php"
+    And the URL path should be "/local/signin/forgot.php"
 
   @javascript
   Scenario: 02. Failing to provide an email address triggers a notification and does not advance the retrieval process.
@@ -57,7 +53,7 @@ Feature: Forgotten username
     And I should not see "If you supplied a correct username or email address then an email should have been sent to you."
     And "username" "field" should exist
     And "email" "field" should exist
-    And the URL path should be "/behat/local/signin/forgot.php"
+    And the URL path should be "/local/signin/forgot.php"
 
   @javascript
   Scenario: 03. Providing an active user's email in the forgotten form leads to the confirmation page.
@@ -66,7 +62,7 @@ Feature: Forgotten username
     And I press "submitemail"
     Then I should see "If you supplied a correct username or email address then an email should have been sent to you."
     And "Continue" "button" should exist
-    And the URL path should be "/behat/local/signin/forgot.php"
+    And the URL path should be "/local/signin/forgot.php"
 
   @javascript
   Scenario: 04. Providing any other kind of email in the forgotten form leads to the same confirmation page.
@@ -75,7 +71,7 @@ Feature: Forgotten username
     And I press "submitemail"
     Then I should see "If you supplied a correct username or email address then an email should have been sent to you."
     And "Continue" "button" should exist
-    And the URL path should be "/behat/local/signin/forgot.php"
+    And the URL path should be "/local/signin/forgot.php"
 
   @javascript
   Scenario: 05. Failing to provide an username triggers a notification and does not advance the retrieval process.
@@ -85,7 +81,7 @@ Feature: Forgotten username
     And I should not see "If you supplied a correct username or email address then an email should have been sent to you."
     And "username" "field" should exist
     And "email" "field" should exist
-    And the URL path should be "/behat/local/signin/forgot.php"
+    And the URL path should be "/local/signin/forgot.php"
 
   @javascript
   Scenario: 06. Providing an active user's username in the forgotten form leads to the confirmation page.
@@ -94,7 +90,7 @@ Feature: Forgotten username
     And I press "submitusername"
     Then I should see "If you supplied a correct username or email address then an email should have been sent to you."
     And "Continue" "button" should exist
-    And the URL path should be "/behat/local/signin/forgot.php"
+    And the URL path should be "/local/signin/forgot.php"
 
   @javascript
   Scenario: 07. Providing any other kind of username in the forgotten form leads to the same confirmation page.
@@ -103,7 +99,7 @@ Feature: Forgotten username
     And I press "submitusername"
     Then I should see "If you supplied a correct username or email address then an email should have been sent to you."
     And "Continue" "button" should exist
-    And the URL path should be "/behat/local/signin/forgot.php"
+    And the URL path should be "/local/signin/forgot.php"
 
   @javascript
   Scenario: 08. Clicking on the 'Forgotten your password?' link leads to the retrieval page.
@@ -115,4 +111,4 @@ Feature: Forgotten username
     And I should see "Search by email address"
     And "username" "field" should exist
     And "email" "field" should exist
-    And the URL path should be "/behat/local/signin/forgot.php"
+    And the URL path should be "/local/signin/forgot.php"

@@ -127,6 +127,7 @@ if ($helper->authenticate()) {
 
 echo $OUTPUT->header();
 
+// This variable is only used for testing the non-JS workflow in Behat.
 $nojs = optional_param('nojs', 0, PARAM_BOOL);
 if (!$nojs) {
     $PAGE->requires->js_call_amd('local_signin/login', 'init');

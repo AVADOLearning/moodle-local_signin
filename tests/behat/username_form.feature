@@ -71,7 +71,7 @@ Feature: Log in to platform
     Then I should see "This username does not exist or it is not active"
     And I should see "Username"
     And I should not see "Password"
-    And the URL path should be "/behat/local/signin/index.php"
+    And the URL path should be "/local/signin/index.php"
 
   @javascript
   Scenario: 03. Providing a non-existent username triggers a notification and does not advance the signin process.
@@ -80,7 +80,7 @@ Feature: Log in to platform
     Then I should see "This username does not exist or it is not active"
     And I should see "Username"
     And I should not see "Password"
-    And the URL path should be "/behat/local/signin/index.php"
+    And the URL path should be "/local/signin/index.php"
 
   @javascript
   Scenario: 04. Providing a suspended user's username triggers a notification and does not advance the signin process.
@@ -89,7 +89,7 @@ Feature: Log in to platform
     Then I should see "This username does not exist or it is not active"
     And I should see "Username"
     And I should not see "Password"
-    And the URL path should be "/behat/local/signin/index.php"
+    And the URL path should be "/local/signin/index.php"
 
   @javascript
   Scenario: 05. Providing a deleted user's username triggers a notification and does not advance the signin process.
@@ -98,7 +98,7 @@ Feature: Log in to platform
     Then I should see "This username does not exist or it is not active"
     And I should see "Username"
     And I should not see "Password"
-    And the URL path should be "/behat/local/signin/index.php"
+    And the URL path should be "/local/signin/index.php"
 
   @javascript
   Scenario: 06. Providing an unconfirmed username triggers a notification and does not advance the signin process.
@@ -107,7 +107,7 @@ Feature: Log in to platform
     Then I should see "You need to confirm your login"
     And I should not see "Username"
     And I should not see "Password"
-    And the URL path should be "/behat/local/signin/index.php"
+    And the URL path should be "/local/signin/index.php"
 
   @javascript
   Scenario: 07. Providing a username associated with another domain redirects there.
@@ -123,4 +123,4 @@ Feature: Log in to platform
     And I should not see "This username does not exist or it is not active"
     And "username" "field" should not exist
     And "password" "field" should not exist
-    And the URL path should be "/behat/"
+    And the URL path should be "/"

@@ -60,7 +60,7 @@ Feature: Log in to platform
     And the field "username" matches value "student1"
     And I should see "Password"
     And I should not see "This username does not exist or it is not active"
-    And the URL path should be "/behat/local/signin/index.php"
+    And the URL path should be "/local/signin/index.php"
 
   @javascript
   Scenario: 02. Providing a wrong password triggers a notification and does not advance the signin process.
@@ -69,7 +69,7 @@ Feature: Log in to platform
     And I set the field "password" to "huehuehue"
     And I press "Log In"
     Then I should see "Invalid login, please try again"
-    And the URL path should be "/behat/local/signin/index.php"
+    And the URL path should be "/local/signin/index.php"
 
   @javascript
   Scenario: 03. Providing another user's password triggers a notification and does not advance the signin process.
@@ -78,7 +78,7 @@ Feature: Log in to platform
     And I set the field "password" to "pass2"
     And I press "Log In"
     Then I should see "Invalid login, please try again"
-    And the URL path should be "/behat/local/signin/index.php"
+    And the URL path should be "/local/signin/index.php"
 
   @javascript
   Scenario: 04. Providing the correct password advances to homepage.
@@ -87,7 +87,7 @@ Feature: Log in to platform
     And I set the field "password" to "pass1"
     And I press "Log In"
     Then I should not see "Invalid login, please try again"
-    And the URL path should be "/behat/my/"
+    And the URL path should be "/my/"
 
   @javascript
   Scenario: 05. Checking 'Remember username' leads straight to username + password on next login.
@@ -133,15 +133,15 @@ Feature: Log in to platform
     And I should see "Do you really want to log out?"
     And "Continue" "button" should exist
     And "Cancel" "button" should exist
-    And the URL path should be "/behat/login/logout.php"
+    And the URL path should be "/login/logout.php"
 
   @javascript
   Scenario: 08. If a redirect exists, user is taken there after successful login.
-    Given I visit the local URL "/local/signin/index.php?returnurl=/behat/user/profile.php"
+    Given I visit the local URL "/local/signin/index.php?returnurl=/user/profile.php"
     And I set the field "username" to "student1"
     And I press "Proceed"
     And I set the field "password" to "pass1"
     And I press "Log In"
-    Then the URL path should be "/behat/user/profile.php"
+    Then the URL path should be "/user/profile.php"
 
 
