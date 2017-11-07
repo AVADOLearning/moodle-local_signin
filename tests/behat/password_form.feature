@@ -18,11 +18,7 @@ Feature: Log in to platform
       | cht2     | Cohort 2 |
     And I add "student1@example.com" user to "Cohort 1" cohort members
     And I add "student2@example.com" user to "Cohort 2" cohort members
-
-#    And I navigate to "Brand Manager" node in "Site administration > Brand Manager"
-#    And I press "New brand"
     And I visit the local URL "/local/brandmanager/manage_brand.php?"
-
     And I set the following fields to these values:
       | Name | Brand1 |
     And I press "Save changes"
@@ -54,15 +50,15 @@ Feature: Log in to platform
       | domain | otherdomain.net |
     And I press "Save changes"
     And I log out
-    And I visit the local URL "/local/signin/index.php"
+    And I visit the local URL "/local/signin/index.php?nojs=1"
 
   @javascript
   Scenario: 01. Providing a username associated with existing domain advances to password form.
     Given I set the field "username" to "student1"
     And I press "Proceed"
-    Then "username" "field" should exist
+    Then I should see "Username"
     And the field "username" matches value "student1"
-    And "password" "field" should exist
+    And I should see "Password"
     And I should not see "This username does not exist or it is not active"
     And the URL path should be "/behat/local/signin/index.php"
 
@@ -118,11 +114,11 @@ Feature: Log in to platform
     And I press "Proceed"
     And the field "username" matches value "student1"
     And I click on "Change your username?" "link"
-    Then "username" "field" should exist
+    Then I should see "Username"
     And "submitusername" "button" should exist
     And the field "username" does not match value "student1"
-    And "password" "field" should not exist
-    And "submitpassword" "button" should not exist
+    And I should not see "Password"
+    And I should not see "Log In"
 
   @javascript
   Scenario: 07. Visiting the signin page while logged in redirects to logout confirmation.

@@ -25,7 +25,6 @@ Feature: Log in to platform
     And I press "Save changes"
     And I click on "Manage brand cohorts" "link" in the "Brand1" "table_row"
     And I should see "Manage brand cohorts"
-
     And I expand the "Selected Cohorts" autocomplete menu
     And I click on "Cohort 1" item in the autocomplete menu
     And I press "Save changes"

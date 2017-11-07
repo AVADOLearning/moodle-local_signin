@@ -42,13 +42,14 @@ $PAGE->set_title($site->fullname);
 $PAGE->set_heading($site->fullname);
 $helper->additional_meta_tags();
 
+$helper->set_wants_url();
 $helper->handle_session_timeout();
 
 $helper->reset_auth_global_vars();
 $helper->auth_plugin_bootstrapper();
 
-$username_form = new username_form();
-$password_form = new password_form();
+$username_form = new username_form($helper->get_login_url());
+$password_form = new password_form($helper->get_login_url());
 
 $username = '';
 
@@ -64,11 +65,10 @@ if (!$helper->is_auth_global_vars_populated()) {
         $helper->set_userform_params_in_auth_global_vars($values);
 
         // Need to parse the username field to the password form
-        list($username, $rememberme, $returnurl) = $helper->get_userform_params_from_auth_global_vars();
+        list($username, $rememberme) = $helper->get_userform_params_from_auth_global_vars();
         $password_form->set_data(array(
             'username' => $username,
             'rememberme' => $rememberme,
-            'returnurl' => $returnurl
         ));
     }
 
@@ -81,7 +81,6 @@ if (!$helper->is_auth_global_vars_populated()) {
         $password_form->set_data(array(
             'username' => $username,
             'rememberme' => 1,
-            'returnurl' => $helper->get_return_url()
         ));
     }
 
@@ -99,7 +98,7 @@ if ($helper->authenticate()) {
     }
 
     $helper->set_remember_me();
-    redirect($helper->get_return_url());
+    redirect($helper->get_test_session_url());
 } else {
     // The user object is populated if exited at correct stage
     list($confirm, $email) = $helper->user_needs_to_confirm_account($username);

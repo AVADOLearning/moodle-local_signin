@@ -16,12 +16,16 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
             container  : '.username_form',
             input      : '#id_username',
             submit     : '#id_submitusername',
+            rememberme : '#check_rememberme',
+            returnurl  : '#id_returnurl',
             validation : handleUsernameSubmission
         },
         password : {
             container  : '.password_form',
             input      : '#id_password',
             submit     : '#id_submitpassword',
+            rememberme : '#check_rememberme',
+            returnurl  : '#id_returnurl',
             changeuser : '.changeuser',
             validation : handlePasswordSubmission
         }
@@ -39,6 +43,8 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
                     container  : $usernameContainer,
                     form       : $usernameContainer.find('form'),
                     input      : $usernameContainer.find($options.username.input),
+                    rememberme : $usernameContainer.find($options.username.rememberme),
+                    returnurl : $usernameContainer.find($options.username.returnurl),
                     submit     : $usernameContainer.find($options.username.submit)
                 },
                 password : {
@@ -46,6 +52,8 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
                     form       : $passwordContainer.find('form'),
                     username   : $passwordContainer.find($options.username.input),
                     input      : $passwordContainer.find($options.password.input),
+                    rememberme : $passwordContainer.find($options.password.rememberme),
+                    returnurl : $passwordContainer.find($options.password.returnurl),
                     submit     : $passwordContainer.find($options.password.submit),
                     changeuser : $passwordContainer.find($options.password.changeuser)
                 }
@@ -85,6 +93,8 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
         var username = $options.username.input.val();
 
         if (username.toLowerCase() !== 'guest') {
+            setRememberme($options);
+            setReturnurl($options);
             checkDomain(username, $options);
         } else {
             // Populate the username field in the password form
@@ -108,12 +118,28 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
         });
     }
 
+    function setRememberme($options) {
+        var $remFromUserForm = $options.username.rememberme;
+        var $remFromPassForm = $options.password.rememberme;
+        if ($remFromUserForm.prop('checked')) {
+            $remFromPassForm.val("1");
+        }
+    }
+
+    function setReturnurl($options) {
+        var retFromUserFormVal = $options.username.returnurl.val();
+        var $retFromPassForm = $options.password.returnurl;
+        if (retFromUserFormVal) {
+            $retFromPassForm.val(retFromUserFormVal);
+        }
+    }
+
     function checkDomain(username, $options) {
         var result = false;
         queryWebservice(username)[0].done(function(response) {
             result = handleDomainRedirect(response, username, $options);
         }).fail(function() {
-            get_string_and_notify('error', 'invalid_user');
+            get_string_and_notify('danger', 'invalid_user');
             result = false;
         });
         return result;

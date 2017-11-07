@@ -55,12 +55,11 @@ Feature: Log in to platform
     And I press "Save changes"
     And I click on "Back to brands" "link"
     And I log out
-
+    And I visit the local URL "/local/signin/index.php"
 
   @javascript
-  Scenario: Successful login, without redirect.
-    Given I visit the local URL "/local/signin/tests/resources/login_javascript.php"
-    Then I should see "Username"
+  Scenario: 01. Successful login, without redirect.
+    Given I should see "Username"
     And I should not see "Password"
     And I set the following fields to these values:
       | username | student1 |
@@ -73,9 +72,8 @@ Feature: Log in to platform
     And I should see "Site home"
 
   @javascript
-  Scenario: Redirect if on wrong domain.
-    Given I visit the local URL "/local/signin/tests/resources/login_javascript.php"
-    And I set the following fields to these values:
+  Scenario: 02. Redirect if on wrong domain.
+    Given I set the following fields to these values:
       | username | student2 |
     And I press "Proceed"
     Then I should see "http://otherdomain/behat/local/signin/index.php?username=student2"
@@ -85,50 +83,44 @@ Feature: Log in to platform
 #    And I should see "Proceed"
 
   @javascript
-  Scenario: Forgot username.
-    Given I visit the local URL "/local/signin/tests/resources/login_javascript.php"
-    And I click on "Forgotton your username?" "link"
+  Scenario: 03. Forgot username.
+    Given I click on "Forgotten your username?" "link"
     Then I should see "Search by username"
     And I should see "Search by email address"
 
   @javascript
-  Scenario: user doesn't exist.
-    Given I visit the local URL "/local/signin/tests/resources/login_javascript.php"
-    And I set the following fields to these values:
+  Scenario: 04. User doesn't exist.
+    Given I set the following fields to these values:
       | username | unknownuser |
     And I press "Proceed"
     Then I should see "That username does not seem to exist."
 
   @javascript
-  Scenario: Invalid username/email.
-    Given I visit the local URL "/local/signin/tests/resources/login_javascript.php"
-    And I set the following fields to these values:
+  Scenario: 05. Invalid username/email.
+    Given I set the following fields to these values:
       | username | invalid user |
     And I press "Proceed"
     Then I should see "That username/email doesn't look quite right, please double-check and try again."
 
   @javascript
-  Scenario: Username not provided.
-    Given I visit the local URL "/local/signin/tests/resources/login_javascript.php"
-    And I press "Proceed"
+  Scenario: 06. Username not provided.
+    Given I press "Proceed"
     Then I should not see "Password"
     And I should see "Username"
 
   @javascript
-  Scenario: Forgot password.
-    Given I visit the local URL "/local/signin/tests/resources/login_javascript.php"
-    And I set the following fields to these values:
+  Scenario: 07. Forgot password.
+    Given I set the following fields to these values:
       | username | student1 |
     And I press "Proceed"
     Then I should see "Password"
-    And I click on "Forgotton your password?" "link"
+    And I click on "Forgotten your password?" "link"
     Then I should see "Search by username"
     And I should see "Search by email address"
 
   @javascript
-  Scenario: Change username.
-    Given I visit the local URL "/local/signin/tests/resources/login_javascript.php"
-    And I set the following fields to these values:
+  Scenario: 08. Change username.
+    Given I set the following fields to these values:
       | username | student1 |
     And I press "Proceed"
     Then I should see "Password"
@@ -137,10 +129,33 @@ Feature: Log in to platform
     And I should not see "Password"
 
   @javascript
-  Scenario: Log in as guest
-    Given I visit the local URL "/local/signin/tests/resources/login_javascript.php"
-    And I set the following fields to these values:
+  Scenario: 09. Log in as guest.
+    Given I set the following fields to these values:
       | username | guest |
     And I press "Proceed"
-    Then I should see "Site pages"
-    And I should see "Home"
+    Then I should see "You are currently using guest access"
+
+  @javascript
+  Scenario: 10. Remember username.
+    Given I set the following fields to these values:
+      | username | student1 |
+    And I click on "rememberme" "checkbox"
+    And I press "submitusername"
+    And I set the field "password" to "pass1"
+    And I press "submitpassword"
+    And I log out
+    And I visit the local URL "/local/signin/index.php"
+    Then I should see "Username"
+    And "username" "field" should exist
+    And the field "username" matches value "student1"
+    And I should see "Password"
+    And "password" "field" should exist
+
+  @javascript
+  Scenario: 11. Redirect to URL.
+    Given I visit the local URL "/local/signin/index.php?returnurl=/user/profile.php"
+    And I set the field "username" to "student1"
+    And I press "Proceed"
+    And I set the field "password" to "pass1"
+    And I press "Log In"
+    Then the URL path should be "/user/profile.php"

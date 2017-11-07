@@ -12,6 +12,7 @@ namespace local_signin\helper;
 global $CFG;
 
 use \core\notification;
+use moodle_url;
 
 require_once "{$CFG->dirroot}/login/lib.php";
 
@@ -106,7 +107,7 @@ class login_helper {
         $cancel = optional_param('cancel', 0, PARAM_BOOL);
         if ($cancel) {
             // Redirect to frontpage, needed for loginhttps
-            redirect(new \moodle_url('/'));
+            redirect(new moodle_url('/'));
         }
     }
 
@@ -123,9 +124,9 @@ class login_helper {
         if ($testsession) {
             if ($testsession == $USER->id) {
                 if (isset($SESSION->wantsurl)) {
-                    $url = new \moodle_url($SESSION->wantsurl);
+                    $url = new moodle_url($SESSION->wantsurl);
                 } else {
-                    $url = new \moodle_url('/');
+                    $url = new moodle_url('/');
                 }
                 unset($SESSION->wantsurl);
                 redirect($url);
@@ -352,40 +353,77 @@ class login_helper {
         $days = intval($this->currentauth->password_expire($USER->username));
         $warning = intval($this->currentauth->config->expiration_warning);
 
-        $url = new \moodle_url('/');
+        $url = new moodle_url('/');
         if ($this->currentauth->can_change_password()) {
             $passwordchangeurl = $this->currentauth->change_password_url();
             if (!$passwordchangeurl) {
-                $url = new \moodle_url('/login/change_password.php');
+                $url = new moodle_url('/login/change_password.php');
             }
         } else {
-            $url = new \moodle_url('/login/change_password.php');
+            $url = new moodle_url('/login/change_password.php');
         }
 
         return array($is, $days, $warning, $url);
     }
 
     /**
+     * Provides the correct URL for login.
+     *
+     * @return mixed|string
+     */
+    public function get_login_url() {
+        global $CFG;
+
+        $url = "{$CFG->wwwroot}/local/signin/index.php";
+
+        if (property_exists($CFG, 'loginhttps') && $CFG->loginhttps) {
+            $url = str_replace('http:', 'https:', $url);
+        }
+
+        return $url;
+    }
+
+    /**
      * Determine the url to return the user to after they have logged in
      *
-     * @return \moodle_url
+     * @return moodle_url
+     */
+    public function get_test_session_url() {
+        global $USER;
+
+        return new moodle_url(
+                $this->get_login_url(), array('testsession' => $USER->id));
+    }
+
+    /**
+     * Set the return URL in the session if the parameter exists.
+     *
+     * @return void
+     */
+    public function set_wants_url() {
+        global $SESSION;
+
+        $url = optional_param('returnurl', '', PARAM_PATH);
+        if ($url) {
+            $SESSION->wantsurl = $url;
+        }
+    }
+
+    /**
+     * Determine where a user should be redirected after they have been logged in,
+     * via function in login/lib.php.
+     *
+     * @return string
      */
     public function get_return_url() {
-        global $SESSION, $USER;
-
-        $url = optional_param('returnurl', '', PARAM_URL);
-        if (empty($url)) {
-            $url = core_login_get_return_url();
-        }
-        $SESSION->wantsurl = $url;
-        return new \moodle_url(get_login_url(), array('testsession'=>$USER->id));
+        return core_login_get_return_url();
     }
 
     /**
      * Redirect to the log out page
      */
     public function redirect_to_logout_page() {
-        redirect(new \moodle_url('/login/logout.php'));
+        redirect(new moodle_url('/login/logout.php'));
     }
 
     /**
@@ -413,7 +451,6 @@ class login_helper {
 
         $frm->username = $data->username;
         $frm->rememberme = $data->rememberme;
-        $frm->returnurl = $data->returnurl;
     }
 
     /**
@@ -425,12 +462,17 @@ class login_helper {
         global $frm;
 
         if (isset($frm) && isset($frm->username) && $frm && $frm->username) {
-            return array($frm->username, $frm->rememberme, $frm->returnurl);
+            return array($frm->username, $frm->rememberme);
         };
 
         return array('', 0, '');
     }
 
+    /**
+     * Get the username from a querystring or a cookie.
+     *
+     * @return mixed|string
+     */
     public function get_username_from_querystring_or_cookie() {
         if ($this->authplugins[0]->authtype !== 'shibboleth') {  // See bug 5184
             if (!empty($_GET["username"])) {
@@ -457,14 +499,23 @@ class login_helper {
         $frm->username = $data->username;
         $frm->password = $data->password;
         $frm->rememberme = $data->rememberme;
-        $frm->returnurl = $data->returnurl;
     }
 
+    /**
+     * Verifies that the username is already set in global vars.
+     *
+     * @return bool
+     */
     public function is_username_set_in_auth_global_vars() {
         global $frm;
         return isset($frm->username) && $frm->username && strlen($frm->username) > 0;
     }
 
+    /**
+     * Verifies that the user is already logged in.
+     *
+     * @return bool
+     */
     public function is_user_already_loggedin() {
         return isloggedin() and !isguestuser();
     }

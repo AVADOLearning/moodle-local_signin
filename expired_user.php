@@ -21,7 +21,7 @@ list($is, $days, $warning, $url) = $helper->get_user_expiration_information();
 if (!$is) {
     redirect(get_login_url());
 }
-$returnurl = $helper->get_return_url();
+$returnurl = $helper->get_test_session_url();
 
 if (intval($days) > 0 && intval($days) < intval($warning)) {
     echo $OUTPUT->header();

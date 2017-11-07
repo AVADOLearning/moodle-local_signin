@@ -43,15 +43,8 @@ class password_form extends moodleform {
         $mform->addElement('password', 'password', $this->lang_string('form_password_label'), $pass_attributes);
         $mform->setType('password', PARAM_RAW);
 
-        $mform->addElement('hidden', 'rememberme', 0);
+        $mform->addElement('hidden', 'rememberme', 0, array ('id' => 'check_rememberme'));
         $mform->setType('rememberme', PARAM_INT);
-
-        $returnurl = '';
-        if (isset($frm) && isset($frm->returnurl) && $frm->returnurl) {
-            $returnurl = $frm->returnurl;
-        }
-        $mform->addElement('hidden', 'returnurl', $returnurl);
-        $mform->setType('returnurl', PARAM_URL);
 
         $submit_attributes = array('additionalcss' => $this->lang_string('form_password_button_class'));
         $mform->addElement('submit', 'submitpassword', $this->lang_string('form_password_button_label'), $submit_attributes);

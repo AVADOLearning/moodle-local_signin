@@ -36,9 +36,8 @@ Feature: Forgotten username
     And I set the following fields to these values:
       | domain | http://192.168.120.50 |
     And I press "Save changes"
-
     And I log out
-    And I visit the local URL "/local/signin/index.php"
+    And I visit the local URL "/local/signin/index.php?nojs=1"
 
   @javascript
   Scenario: 01. Clicking on the 'Forgotten your username?' link leads to the retrieval page.
