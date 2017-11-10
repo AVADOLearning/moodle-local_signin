@@ -34,9 +34,9 @@ require_once($CFG->dirroot . '/auth/manual/auth.php');
 require_once($CFG->dirroot . '/local/signin/classes/helper/login_helper.php'); // Include the code to test.
 
 /**
- * Test case for keyinfo.
+ * Test case for local_signin.
  *
- * @group filter_keyinfo
+ * @group local_signin
  */
 class local_signin_login_helper_testcase extends advanced_testcase {
     public function test_user_needs_to_change_their_password() {

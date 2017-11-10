@@ -27,10 +27,8 @@ if (intval($days) > 0 && intval($days) < intval($warning)) {
     echo $OUTPUT->header();
     echo $OUTPUT->confirm(get_string('auth_passwordwillexpire', 'auth', $days), $url, $returnurl);
     echo $OUTPUT->footer();
-    exit;
 } elseif (intval($days) < 0 ) {
     echo $OUTPUT->header();
     echo $OUTPUT->confirm(get_string('auth_passwordisexpired', 'auth'), $url, $returnurl);
     echo $OUTPUT->footer();
-    exit;
 }

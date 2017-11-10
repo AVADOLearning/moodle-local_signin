@@ -20,4 +20,3 @@ $helper = new \local_signin\helper\login_helper(false);
 $helper->clear_username_in_auth_global_vars();
 
 redirect(new moodle_url('/local/signin/index.php'));
-die();

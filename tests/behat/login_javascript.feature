@@ -76,7 +76,7 @@ Feature: Log in to platform
     Given I set the following fields to these values:
       | username | student2 |
     And I press "Proceed"
-    Then I should see "http://otherdomain/behat/local/signin/index.php?username=student2"
+    Then the full URL should be "http://otherdomain/behat/local/signin/index.php?username=student2"
 
 #    TODO: Needs alternate test environment to be sent to.
 #    Then I should see "Username"

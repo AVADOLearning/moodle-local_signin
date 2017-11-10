@@ -16,6 +16,10 @@ Feature: Log in to platform
       | idnumber | name     |
       | cht1     | Cohort 1 |
       | cht2     | Cohort 2 |
+    And the following "brands" exist:
+      | name |
+      | somebrand |
+      | someotherbrand |
     And I add "student1@example.com" user to "Cohort 1" cohort members
     And I add "student2@example.com" user to "Cohort 2" cohort members
     And I visit the local URL "/local/brandmanager/manage_brand.php?"

@@ -102,4 +102,8 @@ class util {
             return $method->get_name();
         }, static::$RECOVERY_METHODS);
     }
+
+    public static function lang_string($id) {
+        return get_string($id, util::MOODLE_COMPONENT);
+    }
 }
