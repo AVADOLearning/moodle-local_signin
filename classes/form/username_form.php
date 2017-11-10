@@ -11,7 +11,10 @@ namespace local_signin\form;
 
 use bmdisco_domain\brand_domain;
 use dml_missing_record_exception;
+use local_signin\external;
+use local_signin\model\user_default_domain;
 use local_signin\util;
+use local_signin\moodle_url;
 use moodleform;
 
 defined('MOODLE_INTERNAL') || die;
@@ -47,7 +50,7 @@ class username_form extends moodleform {
 
         $mform->addElement('html', sprintf('<div class="%s"><a href="%s">%s</a></div>',
             util::lang_string('form_userpass_forgot_class'),
-            new \moodle_url('/local/signin/forgot.php'),
+            new moodle_url('/local/signin/forgot.php'),
             util::lang_string('form_username_forgot_label')));
     }
 
@@ -75,7 +78,17 @@ class username_form extends moodleform {
             return;
         }
 
-        if (class_exists('bmdisco_domain\brand_domain')) {
+        $domain_object = user_default_domain::get($username);
+
+        $current_domain = parse_url($CFG->wwwroot, PHP_URL_HOST);
+
+        if ($domain_object->domain !== $current_domain) {
+            $url = new moodle_url($PAGE->url);
+            $url->set_host($domain_object->domain);
+            redirect($url);
+        }
+
+        if (false) {
             try {
                 $domain_object = brand_domain::get_user_default_domain($username, true);
             } catch (dml_missing_record_exception $e) {
@@ -85,7 +98,7 @@ class username_form extends moodleform {
             if ($correct_domain) {
                 $current_url = parse_url($CFG->wwwroot, PHP_URL_HOST);
                 if ($current_url !== $correct_domain) {
-                    $url = new \moodle_url(str_replace($current_url, $correct_domain, $PAGE->url), array('username' => $username));
+                    $url = new moodle_url(str_replace($current_url, $correct_domain, $PAGE->url), array('username' => $username));
                     redirect($url);
                 }
             }

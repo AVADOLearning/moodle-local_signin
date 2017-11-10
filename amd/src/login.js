@@ -6,7 +6,7 @@
  *
  */
 define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
-    const WEB_SERVICE_METHOD_NAME = 'bmdisco_domain_check_domain';
+    const WEB_SERVICE_METHOD_NAME = 'local_signin_check_domain';
     var defaults = {
         form : {
             window     : '#local-signin',
@@ -140,12 +140,12 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
      * @param username
      * @returns {*}
      */
-    function queryWebservice(username){
+    function queryWebservice(input){
         return ajax.call([
             {
                 methodname: WEB_SERVICE_METHOD_NAME,
                 args: {
-                    username: username
+                    input: input
                 }
             }
         ]);
