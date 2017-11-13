@@ -78,30 +78,13 @@ class username_form extends moodleform {
             return;
         }
 
+        // Redirect to other domain if necessary.
         $domain_object = user_default_domain::get($username);
-
         $current_domain = parse_url($CFG->wwwroot, PHP_URL_HOST);
-
         if ($domain_object->domain !== $current_domain) {
-            $url = new moodle_url($PAGE->url);
+            $url = new moodle_url($PAGE->url, array('username' => $username));
             $url->set_host($domain_object->domain);
             redirect($url);
-        }
-
-        if (false) {
-            try {
-                $domain_object = brand_domain::get_user_default_domain($username, true);
-            } catch (dml_missing_record_exception $e) {
-                $domain_object = null;
-            }
-            $correct_domain = $domain_object ? $domain_object->domain : '';
-            if ($correct_domain) {
-                $current_url = parse_url($CFG->wwwroot, PHP_URL_HOST);
-                if ($current_url !== $correct_domain) {
-                    $url = new moodle_url(str_replace($current_url, $correct_domain, $PAGE->url), array('username' => $username));
-                    redirect($url);
-                }
-            }
         }
 
         return;

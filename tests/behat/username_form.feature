@@ -7,12 +7,13 @@ Feature: Log in to platform
   Background:
     Given I log in as "admin"
     And the following "users" exist:
-      | username  | firstname | lastname | email                | password | deleted | suspended | confirmed |
-      | student1  | Student   | 1        | student1@example.com | pass1    | 0       | 0         | 1         |
-      | student2  | Student   | 2        | student2@example.com | pass2    | 0       | 0         | 1         |
-      | suspender | Student   | 3        | student3@example.com | pass3    | 0       | 1         | 1         |
-      | deleter   | Student   | 4        | student4@example.com | pass4    | 1       | 0         | 1         |
-      | student5  | Student   | 5        | student5@example.com | pass5    | 0       | 0         | 0         |
+      | username   | firstname | lastname | email                | password | deleted | suspended | confirmed |
+      | student1   | Student   | 1        | student1@example.com | pass1    | 0       | 0         | 1         |
+      | student2   | Student   | 2        | student2@example.com | pass2    | 0       | 0         | 1         |
+      | suspender  | Student   | 3        | student3@example.com | pass3    | 0       | 1         | 1         |
+      | deleter    | Student   | 4        | student4@example.com | pass4    | 1       | 0         | 1         |
+      | student5   | Student   | 5        | student5@example.com | pass5    | 0       | 0         | 0         |
+      | cohortless | Student   | 6        | student6@example.com | pass6    | 0       | 0         | 1         |
     And the following "cohorts" exist:
       | idnumber | name     |
       | cht1     | Cohort 1 |
@@ -111,7 +112,9 @@ Feature: Log in to platform
 
   @javascript
   Scenario: 07. Providing a username associated with another domain redirects there.
-    Given I set the field "username" to "student2"
+    Given the following "core" configuration values are set:
+      | local_signin_userdomain | bmdisco_domain\user_domain |
+    And I set the field "username" to "student2"
     And I press "Proceed"
     Then the full URL should be "http://otherdomain.net/behat/local/signin/index.php?username=student2"
 
@@ -124,3 +127,13 @@ Feature: Log in to platform
     And "username" "field" should not exist
     And "password" "field" should not exist
     And the URL path should be "/"
+
+  @javascript
+  Scenario: 09. A cohortless user is redirected to the default wwwroot of bmdisco_domain.
+    Given the following "bmdisco_domain" configuration values are set:
+      | defaultwwwroot | www.google.com |
+    And the following "core" configuration values are set:
+      | local_signin_userdomain | bmdisco_domain\user_domain |
+    And I set the field "username" to "cohortless"
+    And I press "Proceed"
+    Then the full URL should be "http://www.google.com/behat/local/signin/index.php?username=cohortless"

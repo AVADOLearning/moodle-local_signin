@@ -22,8 +22,8 @@
 
 $functions = array(
     'local_signin_check_domain' => array( // local_PLUGINNAME_FUNCTIONNAME is the name of the web service function that the client will call.
-        'classname'     => 'local_signin\external', // create this class in local/PLUGINNAME/externallib.php
-        'methodname'    => 'check_domain', // implement this function into the above class
+        'classname'     => 'local_signin\external',
+        'methodname'    => 'check_domain',
         'classpath'     => 'local/signin/classes/external.php',
         'description'   => 'Webservice API to check the correct domain for a user and redirect if needed.',
         'type'          => 'read',

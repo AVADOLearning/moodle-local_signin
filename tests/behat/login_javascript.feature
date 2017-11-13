@@ -13,9 +13,10 @@ Feature: Log in to platform
   Background:
     Given I log in as "admin"
     And the following "users" exist:
-      | username | firstname | lastname | email                | password |
-      | student1 | Student   | 1        | student1@example.com | pass1    |
-      | student2 | Student   | 2        | student2@example.com | pass2    |
+      | username   | firstname | lastname | email                | password |
+      | student1   | Student   | 1        | student1@example.com | pass1    |
+      | student2   | Student   | 2        | student2@example.com | pass2    |
+      | cohortless | Student   | 3        | student3@example.com | pass3    |
     And the following "cohorts" exist:
       | idnumber | name     |
       | cht1     | Cohort 1 |
@@ -51,7 +52,7 @@ Feature: Log in to platform
     And I click on "Manage domains" "link" in the "Brand2" "table_row"
     And I should see "Add new domain"
     And I set the following fields to these values:
-      | domain | otherdomain |
+      | domain | redirected.one |
     And I press "Save changes"
     And I click on "Back to brands" "link"
     And I log out
@@ -73,14 +74,12 @@ Feature: Log in to platform
 
   @javascript
   Scenario: 02. Redirect if on wrong domain.
-    Given I set the following fields to these values:
+    Given the following "core" configuration values are set:
+      | local_signin_userdomain | bmdisco_domain\user_domain |
+    And I set the following fields to these values:
       | username | student2 |
     And I press "Proceed"
-    Then the full URL should be "http://otherdomain/behat/local/signin/index.php?username=student2"
-
-#    TODO: Needs alternate test environment to be sent to.
-#    Then I should see "Username"
-#    And I should see "Proceed"
+    Then the full URL should be "http://redirected.one/behat/local/signin/index.php?username=student2"
 
   @javascript
   Scenario: 03. Forgot username.
@@ -96,20 +95,13 @@ Feature: Log in to platform
     Then I should see "That username does not seem to exist."
 
   @javascript
-  Scenario: 05. Invalid username/email.
-    Given I set the following fields to these values:
-      | username | invalid user |
-    And I press "Proceed"
-    Then I should see "That username/email doesn't look quite right, please double-check and try again."
-
-  @javascript
-  Scenario: 06. Username not provided.
+  Scenario: 05. Username not provided.
     Given I press "Proceed"
     Then I should not see "Password"
     And I should see "Username"
 
   @javascript
-  Scenario: 07. Forgot password.
+  Scenario: 06. Forgot password.
     Given I set the following fields to these values:
       | username | student1 |
     And I press "Proceed"
@@ -119,7 +111,7 @@ Feature: Log in to platform
     And I should see "Search by email address"
 
   @javascript
-  Scenario: 08. Change username.
+  Scenario: 07. Change username.
     Given I set the following fields to these values:
       | username | student1 |
     And I press "Proceed"
@@ -129,14 +121,14 @@ Feature: Log in to platform
     And I should not see "Password"
 
   @javascript
-  Scenario: 09. Log in as guest.
+  Scenario: 08. Log in as guest.
     Given I set the following fields to these values:
       | username | guest |
     And I press "Proceed"
     Then I should see "You are currently using guest access"
 
   @javascript
-  Scenario: 10. Remember username.
+  Scenario: 09. Remember username.
     Given I set the following fields to these values:
       | username | student1 |
     And I click on "rememberme" "checkbox"
@@ -152,10 +144,20 @@ Feature: Log in to platform
     And "password" "field" should exist
 
   @javascript
-  Scenario: 11. Redirect to URL.
+  Scenario: 10. Redirect to URL.
     Given I visit the local URL "/local/signin/index.php?returnurl=/user/profile.php"
     And I set the field "username" to "student1"
     And I press "Proceed"
     And I set the field "password" to "pass1"
     And I press "Log In"
     Then the URL path should be "/user/profile.php"
+
+  @javascript
+  Scenario: 11. A cohortless user is redirected to the default wwwroot of bmdisco_domain.
+    Given the following "bmdisco_domain" configuration values are set:
+      | defaultwwwroot | www.google.com |
+    And the following "core" configuration values are set:
+      | local_signin_userdomain | bmdisco_domain\user_domain |
+    And I set the field "username" to "cohortless"
+    And I press "Proceed"
+    Then the full URL should be "http://www.google.com/behat/local/signin/index.php?username=cohortless"

@@ -9,12 +9,10 @@
 
 namespace local_signin;
 
-use dml_missing_record_exception;
 use external_api;
 use external_function_parameters;
 use external_single_structure;
 use external_value;
-use local_signin\interfaces\static_default_domain;
 use local_signin\model\user_default_domain;
 
 defined('MOODLE_INTERNAL') || die;
