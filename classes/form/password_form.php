@@ -19,8 +19,6 @@ defined('MOODLE_INTERNAL') || die;
 require_once "{$CFG->libdir}/formslib.php";
 
 class password_form extends moodleform {
-    const ELEMENT_WRAPPER = '<div class="%s"><a href="%s">%s</a></div>';
-
     /**
      * @override \moodleform
      */
@@ -52,12 +50,12 @@ class password_form extends moodleform {
         $submit_attributes = array('additionalcss' => util::lang_string('form_password_button_class'));
         $mform->addElement('submit', 'submitpassword', util::lang_string('form_password_button_label'), $submit_attributes);
 
-        $mform->addElement('html', sprintf(static::ELEMENT_WRAPPER,
+        $mform->addElement('html', sprintf(util::ELEMENT_WRAPPER,
             util::lang_string('form_password_changeusername_class'),
             new moodle_url('/local/signin/change_user.php'),
             util::lang_string('form_password_changeusername_label')));
 
-        $mform->addElement('html', sprintf(static::ELEMENT_WRAPPER,
+        $mform->addElement('html', sprintf(util::ELEMENT_WRAPPER,
             util::lang_string('form_userpass_forgot_class'),
             new moodle_url('/local/signin/forgot.php'),
             util::lang_string('form_password_forgot_label')));

@@ -65,6 +65,7 @@ Feature: Log in to platform
     And "submitusername" "button" should exist
     And "submitpassword" "button" should exist
     And "Forgotten your username?" "link" should exist
+    And "Use the old login form." "link" should exist
 
   @javascript
   Scenario: 02. Failing to provide a username triggers a notification and does not advance the signin process.
@@ -137,3 +138,13 @@ Feature: Log in to platform
     And I set the field "username" to "cohortless"
     And I press "Proceed"
     Then the full URL should be "http://www.google.com/behat/local/signin/index.php?username=cohortless"
+
+  @javascript
+  Scenario: 10. Clicking on the 'Use the old login form' link leads to the local_login index page.
+    Given I follow "Use the old login form."
+    Then I should see "Username"
+    And I should see "Password"
+    And "username" "field" should exist
+    And "password" "field" should exist
+    And "loginbtn" "button" should exist
+    And the URL path should be "/local/login/index.php"

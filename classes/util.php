@@ -43,6 +43,8 @@ class util {
      */
     const RECOVERY_METHOD_CLASS_FORMAT = '\local_signin\recovery_method\%s_recovery_method';
 
+    const ELEMENT_WRAPPER = '<div class="%s"><a href="%s">%s</a></div>';
+
     /**
      * Recovery methods.
      *
