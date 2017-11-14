@@ -126,7 +126,7 @@ $string['non_existent_user']                  = 'That username does not seem to 
 // Forgotten username or password form settings
 $string['form_userpass_forgot_class']  = 'forgotpass';
 $string['form_username_forgot_label']  = 'Forgotten your username?';
-$string['form_username_use_old_login'] = 'Use the old login form.';
+$string['form_username_use_old_login'] = 'Go to the old login page.';
 $string['form_password_forgot_label']  = 'Forgotten your password?';
 $string['email_required']              = 'An email address is required.';
 $string['username_required']           = 'An username is required.';

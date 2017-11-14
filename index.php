@@ -136,11 +136,19 @@ if (!$nojs) {
 if ($helper->is_username_set_in_auth_global_vars()) {
     $password_form->display();
 } else {
-    $username_form->set_data(array('username' => $helper->get_username_from_querystring_or_cookie()));
-    $templatecontext = new stdClass();
-    $templatecontext->username_form = $username_form->render();
-    $templatecontext->password_form = $password_form->render();
-    echo $OUTPUT->render_from_template('local_signin/login', $templatecontext);
+    if ($paramusername = $helper->get_username_from_querystring_or_cookie()) {
+        $password_form->set_data(array(
+            'username' => $paramusername,
+            'rememberme' => 0,
+        ));
+        $password_form->display();
+    } else {
+        $username_form->set_data(array('username' => $helper->get_username_from_querystring_or_cookie()));
+        $templatecontext = new stdClass();
+        $templatecontext->username_form = $username_form->render();
+        $templatecontext->password_form = $password_form->render();
+        echo $OUTPUT->render_from_template('local_signin/login', $templatecontext);
+    }
 }
 
 echo $OUTPUT->footer();
