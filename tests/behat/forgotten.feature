@@ -5,34 +5,27 @@ Feature: Forgotten username
   I need to access a page where I can use various username recovery methods.
 
   Background:
-    Given I log in as "admin"
-    And the following "users" exist:
+    Given the following "users" exist:
       | username  | firstname | lastname | email                | password | deleted | suspended |
       | student1  | Student   | 1        | student1@example.com | pass1    | 0       | 0         |
       | student2  | Student   | 2        | student2@example.com | pass2    | 0       | 0         |
       | suspender | Student   | 3        | student3@example.com | pass3    | 0       | 1         |
       | deleter   | Student   | 4        | student4@example.com | pass4    | 1       | 0         |
-
     And the following "cohorts" exist:
       | idnumber | name     |
       | cht1     | Cohort 1 |
-    And I add "student1@example.com" user to "Cohort 1" cohort members
-    And I visit the local URL "/local/brandmanager/manage_brand.php?"
-    And I set the following fields to these values:
-      | Name | Brand1 |
-    And I press "Save changes"
-    And I click on "Manage brand cohorts" "link" in the "Brand1" "table_row"
-    And I should see "Manage brand cohorts"
-    And I expand the "Selected Cohorts" autocomplete menu
-    And I click on "Cohort 1" item in the autocomplete menu
-    And I press "Save changes"
-    And I click on "Back to brands" "link"
-    And I click on "Manage domains" "link" in the "Brand1" "table_row"
-    And I should see "Add new domain"
-    And I set the following fields to these values:
-      | domain | http://192.168.120.50 |
-    And I press "Save changes"
-    And I log out
+    And the following "cohort members" exist:
+      | user     | cohort |
+      | student1 | cht1   |
+    And the following "local_brandmanager" "brand" exist:
+      | name   |
+      | Brand1 |
+    And the following "bmdisco_cohort" "brand_cohort" exist:
+      | brand  | cohort |
+      | Brand1 | cht1   |
+    And the following "bmdisco_domain" "brand_domain" exist:
+      | brand  | domain         | defaultdomain |
+      | Brand1 | 192.168.120.50 | 1             |
     And I visit the local URL "/local/signin/index.php?nojs=1"
 
   @javascript
