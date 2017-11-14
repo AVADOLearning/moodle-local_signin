@@ -56,10 +56,10 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
             };
 
             // Submit button is disabled/enabled on both user & password frames if input box is empty/filled.
-            if (options.dom.username.input.length === 0) {
+            if (options.dom.username.input.val().length === 0) {
                 options.dom.username.submit.attr('disabled', 'disabled');
             }
-            if (options.dom.password.input.length === 0) {
+            if (options.dom.password.input.val().length === 0) {
                 options.dom.password.submit.attr('disabled', 'disabled');
             }
 
