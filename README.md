@@ -13,14 +13,16 @@ logging that's easier to theme.
 ## Configuration
 
 This plugin provides local replacements for the log in and forgotten password
-pages. To enable them, you'll need to change the following Moodle configuration
+pages.
+
+It also facilitates redirecting users to the login process on different domains (e.g. for white labelling), via a configuration setting set to the name of a class implementing the `\local_signin\interfaces\user_domain_interface` interface.
+
+To enable these settings, you'll need to add/change the following Moodle configuration (`$CFG`)
 options:
 
 | Option | Value |
 | --- | --- |
 | `alternateloginurl` | `/local/signin/login.php` |
 | `forgottenpasswordurl` | `/local/signin/forgot.php` |
+| `local_signin_userdomain` | `bmdisco_domain\\user_domain` |
 
-## To do
-
-* Implement the Moodle login process within this plugin.

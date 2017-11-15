@@ -59,7 +59,7 @@ class user_default_domain {
             try {
                 // If the user has a brand default domain (via a cohort), update $result accordingly.
                 $result->domain = $domain_interface->get_user_domain($user);
-            } catch (dml_exception $e) {
+            } catch (dml_missing_record_exception $e) {
                 // If the user does not have a brand default domain, point to bmdisco_domain's defaultwwwroot.
                 $result->domain = get_config('bmdisco_domain', 'defaultwwwroot');
             }

@@ -84,11 +84,11 @@ class username_form extends moodleform {
         }
 
         // Redirect to other domain if necessary.
-        $domain_object = user_default_domain::get($username);
-        $current_domain = parse_url($CFG->wwwroot, PHP_URL_HOST);
-        if ($domain_object->domain !== $current_domain) {
+        $defaultdomain = user_default_domain::get($username);
+        $currentdomain = parse_url($CFG->wwwroot, PHP_URL_HOST);
+        if ($defaultdomain->domain !== $currentdomain) {
             $url = new moodle_url($PAGE->url, array('username' => $username));
-            $url->set_host($domain_object->domain);
+            $url->set_host($defaultdomain->domain);
             redirect($url);
         }
 

@@ -71,8 +71,8 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
             options.dom.password.changeuser.on('click', options.dom, toggleForms);
 
             // Handle form submissions
-            options.dom.username.submit.on('click', options.dom, options.username.validation);
-            options.dom.password.submit.on('click', options.dom, options.password.validation);
+            options.dom.username.container.on('submit', options.dom, options.username.validation);
+            options.dom.password.container.on('submit', options.dom, options.password.validation);
         }
     };
 
