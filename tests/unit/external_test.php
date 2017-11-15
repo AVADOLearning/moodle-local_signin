@@ -77,8 +77,6 @@ class external_test extends advanced_testcase {
         // Set necessary configuration parameters.
         set_config('defaultwwwroot', 'campus.avadolearning.com', 'bmdisco_domain');
         set_config('local_signin_userdomain', 'bmdisco_domain\user_domain');
-
-        $this->webservice = new external();
     }
 
     /**
@@ -88,7 +86,7 @@ class external_test extends advanced_testcase {
      */
     public function test_check_domain_with_nonexistent_user() {
         global $CFG;
-        $responsefornonexistentusername = $this->webservice->check_domain('alfred_the_great');
+        $responsefornonexistentusername = external::check_domain('alfred_the_great');
         $expectedresponse = new user_default_domain(null, null, parse_url($CFG->wwwroot, PHP_URL_HOST));
         $this->assertEquals($expectedresponse, $responsefornonexistentusername);
     }
@@ -99,7 +97,7 @@ class external_test extends advanced_testcase {
      * @return void
      */
     public function test_username_check_domain_with_no_cohort_user() {
-        $responsefornocohortusername = $this->webservice->check_domain($this->user_02->username);
+        $responsefornocohortusername = external::check_domain($this->user_02->username);
         $expectedresponse = new user_default_domain(
             $this->user_02->username,
             $this->user_02->email,
@@ -114,7 +112,7 @@ class external_test extends advanced_testcase {
      * @return void
      */
     public function test_email_check_domain_with_no_cohort_user() {
-        $responsefornocohortusername = $this->webservice->check_domain($this->user_02->email);
+        $responsefornocohortusername = external::check_domain($this->user_02->email);
         $expectedresponse = new user_default_domain(
             $this->user_02->username,
             $this->user_02->email,
@@ -129,7 +127,7 @@ class external_test extends advanced_testcase {
      * @return void
      */
     public function test_username_check_domain_with_cohort_user() {
-        $responseforcohortusername = $this->webservice->check_domain($this->user_01->username);
+        $responseforcohortusername = external::check_domain($this->user_01->username);
         $expectedresponse = new user_default_domain(
             $this->user_01->username,
             $this->user_01->email,
@@ -144,7 +142,7 @@ class external_test extends advanced_testcase {
      * @return void
      */
     public function test_email_check_domain_with_cohort_user() {
-        $responseforcohortusername = $this->webservice->check_domain($this->user_01->email);
+        $responseforcohortusername = external::check_domain($this->user_01->email);
         $expectedresponse = new user_default_domain(
             $this->user_01->username,
             $this->user_01->email,

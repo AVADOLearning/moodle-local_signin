@@ -52,7 +52,7 @@ class local_signin_login_helper_testcase extends advanced_testcase {
         $mock_auth_plugin = $this->getMockBuilder(auth_plugin_manual::class)
             ->disableOriginalClone()
             ->disableArgumentCloning()
-            ->disallowMockingUnknownTypes()
+//            ->disallowMockingUnknownTypes() // Only works with Moodle 3.2 and newer.
             ->getMock();
         // Stub existing method so that all passwords are always expired.
         $mock_auth_plugin->method('password_expire')->willReturn(-1);
