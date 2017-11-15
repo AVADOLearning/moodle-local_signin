@@ -24,8 +24,7 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
             input      : '#id_password',
             submit     : '#id_submitpassword',
             rememberme : '#check_rememberme',
-            changeuser : '.changeuser',
-            validation : handlePasswordSubmission
+            changeuser : '.changeuser'
         }
     };
 
@@ -71,8 +70,7 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
             options.dom.password.changeuser.on('click', options.dom, toggleForms);
 
             // Handle form submissions
-            options.dom.username.container.on('submit', options.dom, options.username.validation);
-            options.dom.password.container.on('submit', options.dom, options.password.validation);
+            options.dom.username.form.on('submit', options.dom, options.username.validation);
         }
     };
 
@@ -96,12 +94,6 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
             options.password.username.val(username);
             options.password.form.submit();
         }
-    }
-
-    function handlePasswordSubmission(event) {
-        event.preventDefault();
-        var options = event.data;
-        options.password.form.submit();
     }
 
     /**
