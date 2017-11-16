@@ -54,13 +54,6 @@ class username_form extends moodleform {
             util::lang_string('form_userpass_forgot_class'),
             new moodle_url('/local/signin/forgot.php'),
             util::lang_string('form_username_forgot_label')));
-
-        $oldsignupform = html_writer::link(new moodle_url('/local/login/index.php'), 'old one.',
-                array('style' => 'text-decoration: underline'));
-        $mform->addElement('html', '<div class="alert alert-info" style="margin-top: 10px">');
-        $mform->addElement('html', "Having trouble with our new login process? Try our " . $oldsignupform
-                , array ('id' => 'uselocallogin'));
-        $mform->addElement('html', '</div>');
     }
 
     /**

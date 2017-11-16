@@ -151,5 +151,7 @@ if ($helper->is_username_set_in_auth_global_vars()) {
     }
 }
 
+
+
 echo $OUTPUT->footer();
 die;

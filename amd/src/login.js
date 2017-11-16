@@ -10,7 +10,8 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
     var defaults = {
         form : {
             window     : '#local-signin',
-            alert      : '.alert'
+            errors     : '.errors',
+            alert      : '.nouser'
         },
         username : {
             container  : '.username_form',
@@ -27,10 +28,11 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
             changeuser : '.changeuser'
         }
     };
+    var options;
 
     return {
-        init: function(options) {
-            options = $.extend(defaults, options);
+        init: function(overrides) {
+            options = $.extend(defaults, overrides);
 
             // Locate dom elements
             var $usernameContainer = $(options.username.container);
@@ -212,9 +214,9 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
     function notify(type, message) {
         $(defaults.form.alert).alert('close');
         $('<div>')
-            .addClass('alert alert-' + type + ' alert-dismissable')
+            .addClass('alert alert-' + type + ' nouser')
             .text(message)
-            .appendTo(defaults.form.window)
+            .appendTo(options.form.errors)
     }
 
     /**

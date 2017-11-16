@@ -46,7 +46,7 @@ Feature: Log in to platform
     And "submitusername" "button" should exist
     And "submitpassword" "button" should exist
     And "Forgotten your username?" "link" should exist
-    And "old one." "link" should exist
+    And "Try our old one." "link" should exist
 
   @javascript
   Scenario: 02. Failing to provide a username triggers a notification and does not advance the signin process.
@@ -122,7 +122,7 @@ Feature: Log in to platform
 
   @javascript
   Scenario: 10. Clicking on the 'Use the old login form' link leads to the local_login index page.
-    Given I follow "old one."
+    Given I follow "Try our old one."
     Then I should see "Username"
     And I should see "Password"
     And "username" "field" should exist
