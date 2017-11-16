@@ -86,14 +86,15 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
         var options = event.data;
         var username = options.username.input.val();
 
-        if (username.toLowerCase() !== 'guest') {
-            setRememberMe(options);
-            checkDomain(username, options);
-        } else {
+        if (username.toLowerCase() === 'guest') {
             // Populate the username field in the password form
             options.password.username.val(username);
             options.password.form.submit();
+            return;
         }
+
+        setRememberMe(options);
+        checkDomain(username, options);
     }
 
     /**
