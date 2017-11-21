@@ -156,7 +156,7 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
     function maybeDomainRedirect(response, username, options) {
         var currentURL = new URL(M.cfg.wwwroot);
         if (response.email === null) {
-            getStringAndNotify('warning', 'non_existent_user');
+            getStringAndNotify('danger', 'non_existent_user');
         } else if (response.domain !== currentURL.hostname) {
             redirect(response, username);
         } else {
