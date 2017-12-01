@@ -18,6 +18,7 @@ use local_signin\form\password_form;
 use local_signin\form\username_form;
 
 require_once dirname(dirname(__DIR__)) . '/config.php';
+/** @var moodle_page $PAGE */
 
 redirect_if_major_upgrade_required();
 
