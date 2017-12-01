@@ -16,9 +16,7 @@ use moodleform;
 
 defined('MOODLE_INTERNAL') || die;
 
-require_once "{$CFG->libdir}/formslib.php";
-
-class password_form extends moodleform {
+class password_form extends no_sesskey_form {
     /**
      * @override \moodleform
      */
