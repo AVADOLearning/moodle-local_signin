@@ -15,14 +15,27 @@ logging that's easier to theme.
 This plugin provides local replacements for the log in and forgotten password
 pages.
 
-It also facilitates redirecting users to the login process on different domains (e.g. for white labelling), via a configuration setting set to the name of a class implementing the `\local_signin\interfaces\user_domain_interface` interface.
-
-To enable these settings, you'll need to add/change the following Moodle configuration (`$CFG`)
-options:
+To enable these settings, you'll need to add/change the following Moodle configuration options:
 
 | Option | Value |
 | --- | --- |
 | `alternateloginurl` | `/local/signin/login.php` |
 | `forgottenpasswordurl` | `/local/signin/forgot.php` |
-| `local_signin_userdomain` | `bmdisco_domain\\user_domain` |
 
+### Advanced: co-branding
+
+To enable co-branding behaviour facilitating redirecting users to the login
+process on different domains (e.g. for white labelling), implement the
+`\local_signin\domainfinder\user_domain_interface` interface and set the
+following options in `/config.php`:
+
+```php
+$CFG->local_signin_defaultdomain = 'defaultlogindomain.com';
+$CFG->local_signin_domainfinder = '\\local_yourplugin\\your_user_domain';
+```
+
+`defaultdomain` should be the canonical/default home of your platform when no
+valid `Host` header was provided by the client. `domainfinder` should contain
+the fully-qualified name of a `user_domain_interface` implementation that
+resolves the user's inputted email address or username to a domain. In the event
+that none is found, we fall back to providing the default.

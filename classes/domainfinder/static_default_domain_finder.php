@@ -7,16 +7,18 @@
  * @copyright 2016 Floream Limited
  */
 
-namespace local_signin\interfaces;
-
-use local_signin\model\user_default_domain;
+namespace local_signin\domainfinder;
 
 defined('MOODLE_INTERNAL') || die;
 
-class static_default_domain implements user_domain_interface {
-
+/**
+ * Static default domain finder.
+ *
+ * Fall back on parsing the domain from the active wwwroot.
+ */
+class static_default_domain_finder implements default_domain_finder {
     /**
-     * @override user_domain_interface
+     * @inheritdoc user_domain_interface
      */
     public function get_user_domain($user) {
         global $CFG;
