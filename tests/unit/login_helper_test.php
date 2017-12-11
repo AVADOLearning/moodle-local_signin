@@ -43,27 +43,25 @@ class local_signin_login_helper_testcase extends advanced_testcase {
         $this->resetAfterTest();
 
         // Set the global user.
-        global $USER;
-        $user = $this->getDataGenerator()->create_user();
-        $USER = $user;
+        $this->setUser($this->getDataGenerator()->create_user());
 
         // Create a mock of an existing auth plugin.
         // Leave the original constructor in place, so we can assign config parameters.
-        $mock_auth_plugin = $this->getMockBuilder(auth_plugin_manual::class)
+        $authmock = $this->getMockBuilder(auth_plugin_manual::class)
             ->disableOriginalClone()
             ->disableArgumentCloning()
-//            ->disallowMockingUnknownTypes() // Only works with Moodle 3.2 and newer.
+            //->disallowMockingUnknownTypes() // Only works with Moodle 3.2 and newer.
             ->getMock();
         // Stub existing method so that all passwords are always expired.
-        $mock_auth_plugin->method('password_expire')->willReturn(-1);
+        $authmock->method('password_expire')->willReturn(-1);
         // Assign config parameter 'expiration'.
-        $mock_auth_plugin->config->expiration = 1;
+        $authmock->config->expiration = 1;
 
         // Instantiate the tested plugin and have it use the mock auth plugin.
-        $signin_helper = new login_helper(false);
-        $signin_helper->use_auth_plugin($mock_auth_plugin);
+        $signinhelper = new login_helper(false);
+        $signinhelper->use_auth_plugin($authmock);
 
         // Check that the plugin instance will correctly determine that a password is expired.
-        $this->assertTrue($signin_helper->user_needs_to_change_their_password());
+        $this->assertTrue($signinhelper->user_needs_to_change_their_password());
     }
 }

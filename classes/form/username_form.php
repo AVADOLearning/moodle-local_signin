@@ -10,13 +10,8 @@
 namespace local_signin\form;
 
 use local_signin\domainfinder\user_default_domain;
-use bmdisco_domain\brand_domain;
-use dml_missing_record_exception;
-use html_writer;
-use local_signin\external;
-use local_signin\util;
 use local_signin\moodle_url;
-use moodleform;
+use local_signin\util;
 
 defined('MOODLE_INTERNAL') || die;
 

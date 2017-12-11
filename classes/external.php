@@ -19,39 +19,37 @@ defined('MOODLE_INTERNAL') || die;
 
 class external extends external_api {
     /**
-     * Validates input (username/email). Runs automatically on webservice call - hence no direct call.
+     * Validates input (username/email).
      *
      * @return external_function_parameters
      */
     public static function check_domain_parameters() {
-        return new external_function_parameters(
-            array(
-                'input' => new external_value(PARAM_RAW, 'Username/email to be checked', VALUE_REQUIRED)
-            )
-        );
+        return new external_function_parameters(array(
+            'input' => new external_value(PARAM_RAW, 'Username/email to be checked', VALUE_REQUIRED)
+        ));
     }
 
     /**
-     * Returns domain for given username.
+     * Obtain default domain for given username/email address.
      *
-     * 1) If user does not exist, no redirect takes place.
-     * 2) If user exists & does not have a cohort/brand, redirect to default root.
-     * 3) If user exists & has brand, redirect to default brand domain.
+     * @param string $input Username/email address to lookup.
      *
-     * @param $input [string] user/email to be checked against the domain.
-     * @return object
+     * @return user_default_domain
      */
     public static function check_domain($input) {
         return user_default_domain::get($input);
     }
 
+    /**
+     * Ensure valid return value.
+     *
+     * @return external_single_structure
+     */
     public static function check_domain_returns() {
-        return new external_single_structure(
-            array(
-                'domain'   => new external_value(PARAM_URL, 'Domain for user associated brand'),
-                'username' => new external_value(PARAM_USERNAME, 'Username'),
-                'email'    => new external_value(PARAM_TEXT, 'User email'),
-            )
-        );
+        return new external_single_structure(array(
+            'domain'   => new external_value(PARAM_URL, 'Domain for user associated brand'),
+            'username' => new external_value(PARAM_USERNAME, 'Username'),
+            'email'    => new external_value(PARAM_TEXT, 'User email'),
+        ));
     }
 }
