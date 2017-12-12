@@ -16,6 +16,7 @@
 
 use local_signin\form\password_form;
 use local_signin\form\username_form;
+use local_signin\util;
 
 require_once dirname(dirname(__DIR__)) . '/config.php';
 /** @var moodle_page $PAGE */
@@ -52,8 +53,8 @@ $helper->handle_session_timeout();
 $helper->reset_auth_global_vars();
 $helper->auth_plugin_bootstrapper();
 
-$username_form = new username_form($helper->get_login_url());
-$password_form = new password_form($helper->get_login_url());
+$usernameform = new username_form($helper->get_login_url());
+$passwordform = new password_form($helper->get_login_url());
 
 $username = '';
 
@@ -63,14 +64,14 @@ if (!$helper->is_auth_global_vars_populated()) {
     $helper->create_new_user_object();
 
     // Form submissions go here
-    if ($username_form->is_submitted() &&
-        $username_form->is_validated()) {
-        $values = $username_form->get_data();
+    if ($usernameform->is_submitted() &&
+        $usernameform->is_validated()) {
+        $values = $usernameform->get_data();
         $helper->set_userform_params_in_auth_global_vars($values);
 
         // Need to parse the username field to the password form
         list($username, $rememberme) = $helper->get_userform_params_from_auth_global_vars();
-        $password_form->set_data(array(
+        $passwordform->set_data(array(
             'username' => $username,
             'rememberme' => $rememberme,
         ));
@@ -82,15 +83,15 @@ if (!$helper->is_auth_global_vars_populated()) {
         global $frm;
         $username = $helper->get_username_from_querystring_or_cookie();
         $frm->username = $username;
-        $password_form->set_data(array(
+        $passwordform->set_data(array(
             'username' => $username,
             'rememberme' => 1,
         ));
     }
 
-    if ($password_form->is_submitted() &&
-        $password_form->is_validated()) {
-        $values = $password_form->get_data();
+    if ($passwordform->is_submitted() &&
+        $passwordform->is_validated()) {
+        $values = $passwordform->get_data();
         $helper->set_passform_params_in_auth_global_vars($values);
     }
 }
@@ -138,24 +139,21 @@ if (!$nojs) {
 }
 
 if ($helper->is_username_set_in_auth_global_vars()) {
-    $password_form->display();
+    $passwordform->display();
 } else {
     if ($paramusername = $helper->get_username_from_querystring_or_cookie()) {
-        $password_form->set_data(array(
+        $passwordform->set_data(array(
             'username' => $paramusername,
             'rememberme' => 0,
         ));
-        $password_form->display();
+        $passwordform->display();
     } else {
-        $username_form->set_data(array('username' => $helper->get_username_from_querystring_or_cookie()));
-        $templatecontext = new stdClass();
-        $templatecontext->username_form = $username_form->render();
-        $templatecontext->password_form = $password_form->render();
-        echo $OUTPUT->render_from_template('local_signin/login', $templatecontext);
+        $usernameform->set_data(array('username' => $helper->get_username_from_querystring_or_cookie()));
+        $renderer = $PAGE->get_renderer(util::MOODLE_COMPONENT);
+        /** @var local_signin_renderer $renderer */
+        echo $renderer->login($usernameform, $passwordform);
     }
 }
-
-
 
 echo $OUTPUT->footer();
 die;
