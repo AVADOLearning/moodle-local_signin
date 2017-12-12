@@ -34,7 +34,6 @@ Feature: Log in to platform
     And "submitusername" "button" should exist
     And "submitpassword" "button" should exist
     And "Forgotten your username?" "link" should exist
-    And "Try our old one." "link" should exist
 
   @javascript
   Scenario: 02. Failing to provide a username triggers a notification and does not advance the signin process.
@@ -97,13 +96,3 @@ Feature: Log in to platform
     And "username" "field" should not exist
     And "password" "field" should not exist
     And the URL path should be "/"
-
-  @javascript
-  Scenario: 09. Clicking on the 'Use the old login form' link leads to the local_login index page.
-    Given I follow "Try our old one."
-    Then I should see "Username"
-    And I should see "Password"
-    And "username" "field" should exist
-    And "password" "field" should exist
-    And "loginbtn" "button" should exist
-    And the URL path should be "/local/login/index.php"
