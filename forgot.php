@@ -14,6 +14,8 @@ use local_signin\helper\recovery_helper;
 use local_signin\util;
 
 require_once dirname(dirname(__DIR__)) . '/config.php';
+/** @var core_renderer $OUTPUT */
+/** @var moodle_page   $PAGE */
 require_once "{$CFG->dirroot}/login/set_password_form.php";
 
 $flash = optional_param('flash', -1, PARAM_INT);
@@ -22,7 +24,9 @@ $token = optional_param('token', '', PARAM_ALPHANUM);
 $forgotten = get_string('form_page_title', util::MOODLE_COMPONENT);
 $login     = get_string('login');
 
-$PAGE->https_required();
+if (version_compare('3.4.0', moodle_major_version(), '>=')) {
+    $PAGE->https_required();
+}
 $PAGE->set_cacheable(false);
 $PAGE->set_url(new moodle_url('/local/signin/forgot.php'));
 $PAGE->set_context(context_system::instance());
@@ -83,7 +87,9 @@ if ($token) {
                         get_string('passwordset'));
         }
     } else {
-        $PAGE->verify_https_required();
+        if (version_compare('3.4.0', moodle_major_version(), '>=')) {
+            $PAGE->verify_https_required();
+        }
 
         echo
             $OUTPUT->header(),
@@ -129,7 +135,9 @@ if ($token) {
             }
         }
     } else {
-        $PAGE->verify_https_required();
+        if (version_compare('3.4.0', moodle_major_version(), '>=')) {
+            $PAGE->verify_https_required();
+        }
 
         if ($flashmsg = recovery_helper::get_flash_message($flash)) {
             $flashclass = recovery_helper::is_successful($flash)

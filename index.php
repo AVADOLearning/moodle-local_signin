@@ -33,7 +33,10 @@ if ($helper->is_user_already_loggedin()) {
     $helper->redirect_to_logout_page();
 }
 
-$PAGE->https_required();
+if (version_compare('3.4.0', moodle_major_version(), '>=')) {
+    $PAGE->https_required();
+}
+
 $PAGE->set_cacheable(false);
 $PAGE->set_url(new moodle_url('/local/signin/index.php'));
 $PAGE->set_context(context_system::instance());
