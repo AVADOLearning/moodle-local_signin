@@ -11,21 +11,6 @@ Feature: Forgotten username
       | student2  | Student   | 2        | student2@example.com | pass2    | 0       | 0         |
       | suspender | Student   | 3        | student3@example.com | pass3    | 0       | 1         |
       | deleter   | Student   | 4        | student4@example.com | pass4    | 1       | 0         |
-    And the following "cohorts" exist:
-      | idnumber | name     |
-      | cht1     | Cohort 1 |
-    And the following "cohort members" exist:
-      | user     | cohort |
-      | student1 | cht1   |
-    And the following "local_brandmanager" "brand" exist:
-      | name   |
-      | Brand1 |
-    And the following "bmdisco_cohort" "brand_cohort" exist:
-      | brand  | cohort |
-      | Brand1 | cht1   |
-    And the following "bmdisco_domain" "brand_domain" exist:
-      | brand  | domain         | defaultdomain |
-      | Brand1 | 192.168.120.50 | 1             |
     And I visit the local URL "/local/signin/index.php?nojs=1"
 
   @javascript

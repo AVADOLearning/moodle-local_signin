@@ -21,18 +21,6 @@ Feature: Log in to platform
       | user     | cohort |
       | student1 | cht1   |
       | student2 | cht2   |
-    And the following "local_brandmanager" "brand" exist:
-      | name   |
-      | Brand1 |
-      | Brand2 |
-    And the following "bmdisco_cohort" "brand_cohort" exist:
-      | brand  | cohort |
-      | Brand1 | cht1   |
-      | Brand2 | cht2   |
-    And the following "bmdisco_domain" "brand_domain" exist:
-      | brand  | domain          | defaultdomain |
-      | Brand1 | 192.168.120.50  | 1             |
-      | Brand2 | otherdomain.one | 1             |
     And I visit the local URL "/local/signin/index.php?nojs=1"
 
   @javascript
@@ -95,10 +83,10 @@ Feature: Log in to platform
   @javascript
   Scenario: 07. Providing a username associated with another domain redirects there.
     Given the following "core" configuration values are set:
-      | local_signin_userdomain | bmdisco_domain\user_domain |
+      | local_signin_domainfinder | \local_signin\domainfinder\test_default_domain_finder |
     And I set the field "username" to "student2"
     And I press "Proceed"
-    Then the full URL should be "http://otherdomain.one/behat/local/signin/index.php?username=student2"
+    Then the URL domain should be "redirected.one"
 
   @javascript
   Scenario: 08. Providing 'guest' username triggers a notification and advances to homepage.
@@ -111,17 +99,7 @@ Feature: Log in to platform
     And the URL path should be "/"
 
   @javascript
-  Scenario: 09. A cohortless user is redirected to the default wwwroot of bmdisco_domain.
-    Given the following "bmdisco_domain" configuration values are set:
-      | defaultwwwroot | www.google.com |
-    And the following "core" configuration values are set:
-      | local_signin_userdomain | bmdisco_domain\user_domain |
-    And I set the field "username" to "cohortless"
-    And I press "Proceed"
-    Then the full URL should be "http://www.google.com/behat/local/signin/index.php?username=cohortless"
-
-  @javascript
-  Scenario: 10. Clicking on the 'Use the old login form' link leads to the local_login index page.
+  Scenario: 09. Clicking on the 'Use the old login form' link leads to the local_login index page.
     Given I follow "Try our old one."
     Then I should see "Username"
     And I should see "Password"

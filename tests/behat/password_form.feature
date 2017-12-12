@@ -20,18 +20,6 @@ Feature: Log in to platform
       | user     | cohort |
       | student1 | cht1   |
       | student2 | cht2   |
-    And the following "local_brandmanager" "brand" exist:
-      | name   |
-      | Brand1 |
-      | Brand2 |
-    And the following "bmdisco_cohort" "brand_cohort" exist:
-      | brand  | cohort |
-      | Brand1 | cht1   |
-      | Brand2 | cht2   |
-    And the following "bmdisco_domain" "brand_domain" exist:
-      | brand  | domain          | defaultdomain |
-      | Brand1 | 192.168.120.50  | 1             |
-      | Brand2 | otherdomain.one | 1             |
     And I visit the local URL "/local/signin/index.php?nojs=1"
 
   @javascript

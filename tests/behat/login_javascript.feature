@@ -24,18 +24,6 @@ Feature: Log in to platform
       | user     | cohort |
       | student1 | cht1   |
       | student2 | cht2   |
-    And the following "local_brandmanager" "brand" exist:
-      | name   |
-      | Brand1 |
-      | Brand2 |
-    And the following "bmdisco_cohort" "brand_cohort" exist:
-      | brand  | cohort |
-      | Brand1 | cht1   |
-      | Brand2 | cht2   |
-    And the following "bmdisco_domain" "brand_domain" exist:
-      | brand  | domain         | defaultdomain |
-      | Brand1 | 192.168.120.50 | 1             |
-      | Brand2 | redirected.one | 1             |
     And I visit the local URL "/local/signin/index.php"
 
   @javascript
@@ -55,11 +43,11 @@ Feature: Log in to platform
   @javascript
   Scenario: 02. Redirect if on wrong domain.
     Given the following "core" configuration values are set:
-      | local_signin_userdomain | bmdisco_domain\user_domain |
+      | local_signin_domainfinder | \local_signin\domainfinder\test_default_domain_finder |
     And I set the following fields to these values:
       | username | student2 |
     And I press "Proceed"
-    Then the full URL should be "http://redirected.one/behat/local/signin/index.php?username=student2"
+    Then the URL domain should be "redirected.one"
 
   @javascript
   Scenario: 03. Forgot username.
@@ -131,13 +119,3 @@ Feature: Log in to platform
     And I set the field "password" to "pass1"
     And I press "Log In"
     Then the URL path should be "/user/profile.php"
-
-  @javascript
-  Scenario: 11. A cohortless user is redirected to the default wwwroot of bmdisco_domain.
-    Given the following "bmdisco_domain" configuration values are set:
-      | defaultwwwroot | www.google.com |
-    And the following "core" configuration values are set:
-      | local_signin_userdomain | bmdisco_domain\user_domain |
-    And I set the field "username" to "cohortless"
-    And I press "Proceed"
-    Then the full URL should be "http://www.google.com/behat/local/signin/index.php?username=cohortless"
