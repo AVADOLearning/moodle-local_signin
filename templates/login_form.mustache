@@ -1,10 +1,13 @@
 <div id="local-signin" class="loginpanel">
     <h2>Sign in</h2>
     <div class="subcontent loginsub">
-        <div class="username_form">
-            {{{ username_form }}}
-        </div>
-        <div class="password_form hide">
+        {{#username_form}}
+            <div class="username_form">
+                {{{ username_form }}}
+            </div>
+        {{/username_form}}
+
+        <div class="password_form">
             {{{ password_form }}}
         </div>
         <div class="errors"></div>

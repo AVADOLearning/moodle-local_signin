@@ -16,6 +16,7 @@
 
 use local_signin\form\password_form;
 use local_signin\form\username_form;
+use local_signin\helper\login_helper;
 use local_signin\util;
 
 require_once dirname(dirname(__DIR__)) . '/config.php';
@@ -23,7 +24,7 @@ require_once dirname(dirname(__DIR__)) . '/config.php';
 
 redirect_if_major_upgrade_required();
 
-$helper = new \local_signin\helper\login_helper();
+$helper = new login_helper();
 
 $helper->handle_cancel_request();
 
@@ -46,6 +47,9 @@ $site = get_site();
 $PAGE->set_title($site->fullname);
 $PAGE->set_heading($site->fullname);
 $helper->additional_meta_tags();
+
+/** @var local_signin_renderer $renderer */
+$renderer = $PAGE->get_renderer(util::MOODLE_COMPONENT);
 
 $helper->set_wants_url();
 $helper->handle_session_timeout();
@@ -124,7 +128,7 @@ if ($helper->authenticate()) {
         echo $OUTPUT->box(get_string('restoredaccountinfo'), 'generalbox boxaligncenter');
         require_once($CFG->dirroot.'/login/restored_password_form.php'); // Use our "supplanter" login_forgot_password_form. MDL-20846
         $login_forgot_password_frm = new login_forgot_password_form($CFG->wwwroot . '/login/forgot_password.php', array('username' => $username));
-        $login_forgot_password_frm->display();
+        echo $renderer->forgot_password_form($login_forgot_password_frm);
         echo $OUTPUT->footer();
         die;
     }
@@ -139,19 +143,17 @@ if (!$nojs) {
 }
 
 if ($helper->is_username_set_in_auth_global_vars()) {
-    $passwordform->display();
+    echo $renderer->password_form($passwordform);
 } else {
     if ($paramusername = $helper->get_username_from_querystring_or_cookie()) {
         $passwordform->set_data(array(
             'username' => $paramusername,
             'rememberme' => 0,
         ));
-        $passwordform->display();
+        echo $renderer->password_form($passwordform);
     } else {
         $usernameform->set_data(array('username' => $helper->get_username_from_querystring_or_cookie()));
-        $renderer = $PAGE->get_renderer(util::MOODLE_COMPONENT);
-        /** @var local_signin_renderer $renderer */
-        echo $renderer->login($usernameform, $passwordform);
+        echo $renderer->login_form($usernameform, $passwordform);
     }
 }
 
