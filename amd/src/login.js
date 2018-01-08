@@ -56,8 +56,13 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
                 }
             };
 
-            // Submit button is disabled/enabled on both user & password frames if input box is empty/filled.
+            // Ensure forms are in the correct state:
+            //   -> Submit buttons are disabled/enabled on both user & password
+            //      forms if input box is empty/filled.
+            //   -> The password form should be hidden if a username is already
+            //      known.
             if (options.dom.username.input.val().length === 0) {
+                options.dom.password.container.addClass('hide');
                 options.dom.username.submit.attr('disabled', 'disabled');
             }
             if (options.dom.password.input.val().length === 0) {
@@ -164,8 +169,9 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
             // Stay on page & flip over to password form
             // Populate username field on password form
             options.password.username.val(username);
-            // Toggle the password form
-            options.password.changeuser.click();
+            // Toggle the forms
+            options.username.container.addClass('hide');
+            options.password.container.removeClass('hide');
         }
     }
 
@@ -227,7 +233,7 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
     function toggleForms(event) {
         event.preventDefault();
         var options = event.data;
-        options.password.container.toggleClass('hide');
-        options.username.container.toggleClass('hide');
+        options.password.container.addClass('hide');
+        options.username.container.removeClass('hide');
     }
 });
