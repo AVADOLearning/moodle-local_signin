@@ -7,7 +7,7 @@
             </div>
         {{/username_form}}
 
-        <div class="password_form">
+        <div class="password_form {{#username_form}}hide{{/username_form}}">
             {{{ password_form }}}
         </div>
         <div class="errors"></div>
