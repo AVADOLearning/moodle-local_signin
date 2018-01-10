@@ -60,7 +60,7 @@ Feature: Log in to platform
     Given I set the following fields to these values:
       | username | unknownuser |
     And I press "Proceed"
-    Then I should see "That username does not seem to exist."
+    Then I should see "This username does not exist or it is not active."
 
   @javascript
   Scenario: 05. Username not provided.
