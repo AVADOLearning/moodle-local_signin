@@ -37,7 +37,7 @@ class username_form extends no_sesskey_form {
         $mform->setType('username', PARAM_USERNAME);
 
         $mform->addElement('html', sprintf('<div class="%s">', util::lang_string('form_username_remusername_class')));
-        $mform->addElement('advcheckbox', 'rememberme', '', util::lang_string('form_username_remusername_label'), array ('id' => 'check_rememberme'));
+        $mform->addElement('checkbox', 'rememberme', '', util::lang_string('form_username_remusername_label'), array ('id' => 'check_rememberme'));
         $mform->addElement('html', '</div>');
 
         $submit_attributes = array('additionalcss' => util::lang_string('form_username_button_class'));
