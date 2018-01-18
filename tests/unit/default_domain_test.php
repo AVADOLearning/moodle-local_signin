@@ -35,7 +35,7 @@ require_once($CFG->dirroot . '/auth/manual/auth.php');
 require_once($CFG->dirroot . '/local/signin/classes/helper/login_helper.php'); // Include the code to test.
 
 /**
- * Test case for local_signin.
+ * Default domain test cases.
  *
  * @group local_signin
  */
@@ -43,6 +43,8 @@ class local_signin_default_domain_testcase extends advanced_testcase {
     protected $user;
 
     public function setUp() {
+        $this->resetAfterTest();
+
         $generator = $this->getDataGenerator();
         $this->user = $generator->create_user();
     }
@@ -58,7 +60,6 @@ class local_signin_default_domain_testcase extends advanced_testcase {
     //        ->with(array($this->user->username))
     //        ->willReturn('example.com');
     //
-    //    $this->resetAfterTest();
     //    $CFG->local_signin_domainfinder = $domainfinder;
     //
     //    user_default_domain::get($this->user->username);
