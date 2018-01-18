@@ -119,3 +119,17 @@ Feature: Log in to platform
     And I set the field "password" to "pass1"
     And I press "Log In"
     Then the URL path should be "/user/profile.php"
+
+  @javascript
+  Scenario: 11. Username search is case insensitive.
+    When I set the field "username" to "STUDENT1"
+    And I press "Proceed"
+    Then "password" "field" should be visible
+
+  @javascript
+  Scenario: 12. Email search is case insensitive.
+    Given the following "core" configuration values are set:
+      | authloginviaemail | 1 |
+    When I set the field "username" to "STUDENT1@EXAMPLE.COM"
+    And I press "Proceed"
+    Then "password" "field" should be visible

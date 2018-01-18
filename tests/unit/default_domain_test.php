@@ -64,4 +64,49 @@ class local_signin_default_domain_testcase extends advanced_testcase {
     //
     //    user_default_domain::get($this->user->username);
     //}
+
+    public function test_get_by_username() {
+        $result = user_default_domain::get($this->user->username);
+        $this->assertEquals($this->user->username, $result->username);
+        $this->assertEquals($this->user->email, $result->email);
+    }
+
+    public function test_get_by_invalid_username() {
+        $result = user_default_domain::get("{$this->user->username}-INVALID");
+        $this->assertEquals(null, $result->username);
+        $this->assertEquals(null, $result->email);
+    }
+
+    public function test_get_honours_authloginviaemail_false() {
+        global $CFG;
+
+        $CFG->authloginviaemail = false;
+        $result = user_default_domain::get($this->user->email);
+        $this->assertEquals(null, $result->username);
+        $this->assertEquals(null, $result->email);
+    }
+
+    public function test_get_honours_authloginviaemail_true() {
+        global $CFG;
+
+        $CFG->authloginviaemail = true;
+        $result = user_default_domain::get($this->user->email);
+        $this->assertEquals($this->user->username, $result->username);
+        $this->assertEquals($this->user->email, $result->email);
+    }
+
+    public function test_get_username_is_case_insensitive() {
+        $result = user_default_domain::get(strtoupper($this->user->username));
+        $this->assertEquals($this->user->username, $result->username);
+        $this->assertEquals($this->user->email, $result->email);
+    }
+
+    public function test_get_email_is_case_insensitive() {
+        global $CFG;
+
+        $CFG->authloginviaemail = true;
+        $result = user_default_domain::get(strtoupper($this->user->email));
+        $this->assertEquals($this->user->username, $result->username);
+        $this->assertEquals($this->user->email, $result->email);
+    }
 }
