@@ -82,10 +82,10 @@ class user_default_domain {
         $domainfinder = (is_object($class)) ? $class : new $class();
         /** @var default_domain_finder $domainfinder */
 
-        $where =  'username = :username';
+        $where =  'LOWER(username) = LOWER(:username)';
         $params = array('username' => $input);
         if ($CFG->authloginviaemail) {
-            $where .= " OR email = :email";
+            $where .= " OR LOWER(email) = LOWER(:email)";
             $params['email'] = $input;
         }
 
