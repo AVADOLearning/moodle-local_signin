@@ -450,7 +450,7 @@ class login_helper {
         }
 
         $frm->username = $data->username;
-        $frm->rememberme = $data->rememberme;
+        $frm->rememberme = property_exists($data, 'rememberme') && $data->rememberme;
     }
 
     /**
@@ -461,9 +461,12 @@ class login_helper {
     public function get_userform_params_from_auth_global_vars() {
         global $frm;
 
-        if (isset($frm) && isset($frm->username) && $frm && $frm->username) {
-            return array($frm->username, $frm->rememberme);
-        };
+        if (isset($frm) && $frm && property_exists($frm, 'username') && $frm->username) {
+            return array(
+                $frm->username,
+                property_exists($frm, 'rememberme') && $frm->rememberme,
+            );
+        }
 
         return array('', 0, '');
     }
