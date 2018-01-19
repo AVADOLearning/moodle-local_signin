@@ -159,7 +159,7 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
      * @param options
      */
     function maybeDomainRedirect(response, username, options) {
-        var currentURL = new URL(M.cfg.wwwroot);
+        var currentURL = window.location;
         if (response.email === null) {
             getStringAndNotify('danger', 'form_username_not_found_valid');
         } else if (response.domain !== currentURL.hostname) {
@@ -182,7 +182,7 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
      * @param username
      */
     function redirect(response, username) {
-        var currentURL = new URL(M.cfg.wwwroot);
+        var currentURL = window.location;
         var normalisedPathname = currentURL.pathname === '/' ? '' : currentURL.pathname;
         window.location = window.location.protocol + '//' + response.domain + normalisedPathname +
             '/local/signin/index.php?username=' + username;
