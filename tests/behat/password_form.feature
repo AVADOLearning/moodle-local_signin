@@ -26,9 +26,7 @@ Feature: Log in to platform
   Scenario: 01. Providing a username associated with existing domain advances to password form.
     Given I set the field "username" to "student1"
     And I press "Proceed"
-    Then I should see "Username"
-    And the field "username" matches value "student1"
-    And I should see "Password"
+    Then the field "username" matches value "student1"
     And I should not see "This username does not exist or it is not active"
     And the URL path should be "/local/signin/index.php"
 
@@ -68,10 +66,8 @@ Feature: Log in to platform
     And I press "Log In"
     And I log out
     And I visit the local URL "/local/signin/index.php"
-    Then I should see "Username"
-    And "username" "field" should exist
+    Then "username" "field" should exist
     And the field "username" matches value "student1"
-    And I should see "Password"
     And "password" "field" should exist
     And "rememberme" "checkbox" should not exist
     And "Change your username?" "link" should exist
@@ -84,10 +80,8 @@ Feature: Log in to platform
     And I press "Proceed"
     And the field "username" matches value "student1"
     And I click on "Change your username?" "link"
-    Then I should see "Username"
-    And "submitusername" "button" should exist
+    Then "submitusername" "button" should exist
     And the field "username" does not match value "student1"
-    And I should not see "Password"
     And I should not see "Log In"
 
   @javascript
@@ -97,8 +91,7 @@ Feature: Log in to platform
     And I set the field "password" to "pass1"
     And I press "Log In"
     And I visit the local URL "/local/signin/index.php"
-    Then I should not see "Username"
-    And "username" "field" should not exist
+    Then "username" "field" should not exist
     And "Proceed" "button" should not exist
     And I should see "Do you really want to log out?"
     And "Continue" "button" should exist

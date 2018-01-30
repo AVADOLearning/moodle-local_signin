@@ -28,12 +28,12 @@ Feature: Log in to platform
 
   @javascript
   Scenario: 01. Successful login, without redirect.
-    Given I should see "Username"
-    And I should not see "Password"
+    Given "username" "field" should be visible
+    And "password" "field" should not exist
     And I set the following fields to these values:
       | username | student1 |
     And I press "Proceed"
-    And I should see "Password"
+    And "password" "field" should be visible
     And I set the following fields to these values:
       | password | pass1 |
     And I press "Log In"
@@ -65,15 +65,15 @@ Feature: Log in to platform
   @javascript
   Scenario: 05. Username not provided.
     Given I press "Proceed"
-    Then I should not see "Password"
-    And I should see "Username"
+    Then "password" "field" should not exist
+    And "username" "field" should be visible
 
   @javascript
   Scenario: 06. Forgot password.
     Given I set the following fields to these values:
       | username | student1 |
     And I press "Proceed"
-    Then I should see "Password"
+    Then "password" "field" should be visible
     And I click on "Forgotten your password?" "link"
     Then I should see "Search by username"
     And I should see "Search by email address"
@@ -83,10 +83,10 @@ Feature: Log in to platform
     Given I set the following fields to these values:
       | username | student1 |
     And I press "Proceed"
-    Then I should see "Password"
+    Then "password" "field" should be visible
     And I click on "Change your username?" "link"
-    Then I should see "Username"
-    And I should not see "Password"
+    Then "username" "field" should be visible
+    And "password" "field" should not be visible
 
   @javascript
   Scenario: 08. Log in as guest.
@@ -105,11 +105,9 @@ Feature: Log in to platform
     And I press "submitpassword"
     And I log out
     And I visit the local URL "/local/signin/index.php"
-    Then I should see "Username"
-    And "username" "field" should exist
+    Then "username" "field" should be visible
     And the field "username" matches value "student1"
-    And I should see "Password"
-    And "password" "field" should exist
+    And "password" "field" should be visible
 
   @javascript
   Scenario: 10. Redirect to URL.

@@ -25,8 +25,8 @@ Feature: Log in to platform
 
   @javascript
   Scenario: 01. The login page first displays all the elements of the username form.
-    Given I should see "Username"
-    And I should not see "Password"
+    Given "username" "field" should be visible
+    And "password" "field" should not be visible
     And "username" "field" should exist
     And "password" "field" should exist
     And I should see "Remember username"
@@ -39,8 +39,8 @@ Feature: Log in to platform
   Scenario: 02. Failing to provide a username triggers a notification and does not advance the signin process.
     Given I press "Proceed"
     Then I should see "This username does not exist or it is not active"
-    And I should see "Username"
-    And I should not see "Password"
+    And "username" "field" should be visible
+    And "password" "field" should not be visible
     And the URL path should be "/local/signin/index.php"
 
   @javascript
@@ -48,8 +48,8 @@ Feature: Log in to platform
     Given I set the field "username" to "ghost"
     And I press "Proceed"
     Then I should see "This username does not exist or it is not active"
-    And I should see "Username"
-    And I should not see "Password"
+    And "username" "field" should be visible
+    And "password" "field" should not be visible
     And the URL path should be "/local/signin/index.php"
 
   @javascript
@@ -57,8 +57,8 @@ Feature: Log in to platform
     Given I set the field "username" to "suspender"
     And I press "Proceed"
     Then I should see "This username does not exist or it is not active"
-    And I should see "Username"
-    And I should not see "Password"
+    And "username" "field" should be visible
+    And "password" "field" should not be visible
     And the URL path should be "/local/signin/index.php"
 
   @javascript
@@ -66,8 +66,8 @@ Feature: Log in to platform
     Given I set the field "username" to "deleter"
     And I press "Proceed"
     Then I should see "This username does not exist or it is not active"
-    And I should see "Username"
-    And I should not see "Password"
+    And "username" "field" should be visible
+    And "password" "field" should not be visible
     And the URL path should be "/local/signin/index.php"
 
   @javascript
