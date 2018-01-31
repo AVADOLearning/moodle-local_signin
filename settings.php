@@ -11,10 +11,9 @@ use local_signin\admin\setting_static;
 use local_signin\util;
 
 defined('MOODLE_INTERNAL') || die;
-
 /** @var admin_root $ADMIN */
 
- if ($ADMIN->fulltree) {
+ if ($ADMIN->fulltree && $ADMIN->locate('localplugins')) {
      $recoverymethods = util::get_password_recovery_methods();
      $choices = array_combine($recoverymethods, array_map(function($key) {
          return new lang_string("forgotmethod_{$key}", util::MOODLE_COMPONENT);
