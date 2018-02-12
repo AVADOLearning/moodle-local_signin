@@ -79,8 +79,6 @@ class user_default_domain {
         $class = property_exists($CFG, 'local_signin_domainfinder')
                 ? $CFG->local_signin_domainfinder
                 : static_default_domain_finder::class;
-        $domainfinder = (is_object($class)) ? $class : new $class();
-        /** @var default_domain_finder $domainfinder */
 
         $where =  'LOWER(username) = LOWER(:username)';
         $params = array('username' => $input);
@@ -95,19 +93,19 @@ class user_default_domain {
             $user = $DB->get_record_select(
                     'user', $where, $params, '*', MUST_EXIST);
 
-            if ($CFG->authloginviaemail &&
-                strtolower($input) != strtolower($user->username) &&
-                method_exists($domainfinder, 'avoid_user_email')) {
-                    if ($domainfinder->avoid_user_email($user)) {
-                        return $result;
-                    }
+            /** @var default_domain_finder $domainfinder */
+            $domainfinder = (is_object($class)) ? $class : new $class($user);
+
+            if (strtolower(trim($user->username)) !== strtolower(trim($input)) &&
+                    !$domainfinder->allow_email_authentication()) {
+                return $result;
             }
 
             $result->username = $user->username;
             $result->email = $user->email;
             try {
                 // If the user has a brand default domain (via a cohort), update $result accordingly.
-                $result->domain = $domainfinder->get_user_domain($user);
+                $result->domain = $domainfinder->get_user_domain();
             } catch (dml_missing_record_exception $e) {
                 // No default, so give the "default" login domain.
                 $result->domain = $CFG->local_signin_defaultdomain;
