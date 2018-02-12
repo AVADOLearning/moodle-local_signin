@@ -83,10 +83,9 @@ class user_default_domain {
         $where =  'LOWER(username) = LOWER(:username)';
         $params = array('username' => $input);
 
-        if ($CFG->authloginviaemail) {
-            $where .= " OR LOWER(email) = LOWER(:email)";
-            $params['email'] = $input;
-        }
+        // By default we allow users to log in via email and check it later
+        $where .= " OR LOWER(email) = LOWER(:email)";
+        $params['email'] = $input;
 
         try {
             // If the username is found in the database, set up the result accordingly.
