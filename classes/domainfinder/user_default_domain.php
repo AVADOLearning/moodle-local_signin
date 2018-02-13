@@ -80,12 +80,11 @@ class user_default_domain {
                 ? $CFG->local_signin_domainfinder
                 : static_default_domain_finder::class;
 
-        $where =  'LOWER(username) = LOWER(:username)';
-        $params = array('username' => $input);
-
-        // By default we allow users to log in via email and check it later
-        $where .= " OR LOWER(email) = LOWER(:email)";
-        $params['email'] = $input;
+        $where =  'LOWER(username) = LOWER(:username) OR LOWER(email) = LOWER(:email)';
+        $params = array(
+            'username' => $input,
+            'email'    => $input,
+        );
 
         try {
             // If the username is found in the database, set up the result accordingly.

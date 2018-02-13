@@ -30,6 +30,9 @@ interface default_domain_finder {
     /**
      * Allow email authentication for this user?
      *
+     * Developers can change $CFG->authloginviaemail global setting,
+     * but should take into account and respect it
+     *
      * @return boolean
      */
     public function allow_email_authentication();
