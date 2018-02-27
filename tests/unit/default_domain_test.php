@@ -118,5 +118,4 @@ class local_signin_default_domain_testcase extends advanced_testcase {
         $result = user_default_domain::get($this->user->username);
         $this->assertEquals($CFG->local_signin_defaultdomain, $result->domain);
     }
-
 }
