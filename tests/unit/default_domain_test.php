@@ -109,4 +109,14 @@ class local_signin_default_domain_testcase extends advanced_testcase {
         $this->assertEquals($this->user->username, $result->username);
         $this->assertEquals($this->user->email, $result->email);
     }
+
+    public function test_get_user_fallback_to_default_domain() {
+        global $CFG;
+        $CFG->local_signin_domainfinder  = '\\bmext_signindomain\\default_domain_finder';
+        $CFG->local_signin_defaultdomain = 'default.domain';
+
+        $result = user_default_domain::get($this->user->username);
+        $this->assertEquals($CFG->local_signin_defaultdomain, $result->domain);
+    }
+
 }
