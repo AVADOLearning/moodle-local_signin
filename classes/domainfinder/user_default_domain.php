@@ -10,6 +10,7 @@
 namespace local_signin\domainfinder;
 
 use dml_missing_record_exception;
+use Exception;
 use local_signin\interfaces\static_default_domain;
 use local_signin\interfaces\default_domain_finder;
 use local_signin\util;
@@ -104,7 +105,7 @@ class user_default_domain {
             try {
                 // If the user has a brand default domain (via a cohort), update $result accordingly.
                 $result->domain = $domainfinder->get_user_domain();
-            } catch (dml_missing_record_exception $e) {
+            } catch (Exception $e) {
                 // No default, so give the "default" login domain.
                 $result->domain = $CFG->local_signin_defaultdomain;
             }
