@@ -182,10 +182,8 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
      * @param username
      */
     function redirect(response, username) {
-        var currentURL = window.location;
-        var normalisedPathname = currentURL.pathname === '/' ? '' : currentURL.pathname;
-        window.location = window.location.protocol + '//' + response.domain + normalisedPathname +
-            '/local/signin/index.php?username=' + username;
+        window.location = window.location.protocol +'//' + response.domain +
+                          '/local/signin/index.php?username=' + username;
     }
 
     /**
