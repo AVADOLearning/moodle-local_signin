@@ -172,6 +172,7 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
             // Toggle the forms
             options.username.container.addClass('hide');
             options.password.container.removeClass('hide');
+            document.getElementById("id_password").focus();
         }
     }
 
