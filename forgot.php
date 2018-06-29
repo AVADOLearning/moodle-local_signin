@@ -24,7 +24,7 @@ $token = optional_param('token', '', PARAM_ALPHANUM);
 $forgotten = get_string('form_page_title', util::MOODLE_COMPONENT);
 $login     = get_string('login');
 
-if (version_compare(moodle_major_version(), '3.4.0', '<')) {
+if (version_compare(moodle_major_version(), '3.4', '<')) {
     $PAGE->https_required();
 }
 $PAGE->set_cacheable(false);
@@ -87,7 +87,7 @@ if ($token) {
                         get_string('passwordset'));
         }
     } else {
-        if (version_compare(moodle_major_version(), '3.4.0', '<')) {
+        if (version_compare(moodle_major_version(), '3.4', '<')) {
             $PAGE->verify_https_required();
         }
 
@@ -135,7 +135,7 @@ if ($token) {
             }
         }
     } else {
-        if (version_compare(moodle_major_version(), '3.4.0', '<')) {
+        if (version_compare(moodle_major_version(), '3.4', '<')) {
             $PAGE->verify_https_required();
         }
 
