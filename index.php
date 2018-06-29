@@ -35,7 +35,7 @@ if ($helper->is_user_already_loggedin()) {
     $helper->redirect_to_logout_page();
 }
 
-if (version_compare(moodle_major_version(), '3.4.0', '<')) {
+if (version_compare(moodle_major_version(), '3.4', '<')) {
     $PAGE->https_required();
 }
 
