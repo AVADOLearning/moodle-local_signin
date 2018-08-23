@@ -13,6 +13,8 @@ Feature: Log in to platform
       | deleter    | Student   | 4        | student4@example.com | pass4    | 1       | 0         | 1         |
       | student5   | Student   | 5        | student5@example.com | pass5    | 0       | 0         | 0         |
       | cohortless | Student   | 6        | student6@example.com | pass6    | 0       | 0         | 1         |
+      | samemail1  | Samemail  | 1        | samemail@example.com | pass7    | 0       | 0         | 1         |
+      | samemail2  | Samemail  | 2        | samemail@example.com | pass8    | 0       | 0         | 1         |
     And the following "cohorts" exist:
       | idnumber | name     |
       | cht1     | Cohort 1 |
@@ -96,3 +98,13 @@ Feature: Log in to platform
     And "username" "field" should not exist
     And "password" "field" should not exist
     And the URL path should be "/"
+
+  @javascript
+  Scenario: 09. Providing email adress associated to multiple users triggers a notification and does not advance the signin process.
+    Given I set the field "username" to "samemail@example.com"
+    When I press "Proceed"
+    Then I should see "Field must be unique (if you're using your email, maybe try your username)."
+    And I should see "Username"
+    And I should not see "Password"
+    And the URL path should be "/local/signin/index.php"
+

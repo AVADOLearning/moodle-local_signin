@@ -128,6 +128,8 @@ define(['jquery', 'core/ajax', 'core/str'], function($, ajax, str) {
         }).fail(function(response) {
             if (response.errorcode === 'invalidparameter') {
                 getStringAndNotify('danger', 'invalid_user');
+            } else if (response.errorcode === 'multiplerecordsfound') {
+                getStringAndNotify('danger', 'duplicate_field');
             } else {
                 noWebService(options);
             }

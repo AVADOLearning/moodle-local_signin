@@ -65,6 +65,10 @@ class username_form extends no_sesskey_form {
 
         $username = $data['username'];
 
+        if (static::is_email_duplicate($username)) {
+            return array('username' => util::lang_string('duplicate_field'));
+        }
+
         if (strlen($username) == 0 || !static::active_user_exists($username)) {
             return array('username' => util::lang_string('form_username_not_found_valid'));
         }
@@ -95,4 +99,14 @@ class username_form extends no_sesskey_form {
         global $DB;
         return $DB->record_exists('user', array('username' => $username, 'deleted' => 0, 'suspended' => 0));
     }
+
+    /**
+     * @param $username
+     * @return array
+     */
+    public static function is_email_duplicate($username) {
+        global $DB;
+        return $DB->get_fieldset_select('user', 'email', "email = '{$username}'");
+    }
+
 }
