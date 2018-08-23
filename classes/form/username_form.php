@@ -65,8 +65,12 @@ class username_form extends no_sesskey_form {
 
         $username = $data['username'];
 
-        if (static::is_email_duplicate($username)) {
-            return array('username' => util::lang_string('duplicate_field'));
+        if (static::active_user_by_email_exists($username)) {
+            if (static::is_email_duplicate($username)) {
+                return array('username' => util::lang_string('duplicate_field'));
+            } else {
+                return;
+            }
         }
 
         if (strlen($username) == 0 || !static::active_user_exists($username)) {
@@ -101,12 +105,30 @@ class username_form extends no_sesskey_form {
     }
 
     /**
+     * Confirms whether the given email address exists
+     *
      * @param $username
-     * @return array
+     * @return bool
+     * @throws \dml_exception
      */
-    public static function is_email_duplicate($username) {
+    public static function active_user_by_email_exists($username) {
         global $DB;
-        return $DB->get_fieldset_select('user', 'email', "email = '{$username}'");
+        return $DB->record_exists('user', array('email' => $username, 'deleted' => 0, 'suspended' => 0));
+    }
+
+    /**
+     * Returns an array with all the email occurences
+     *
+     * @param $username
+     * @return boolean
+     */
+    public static function is_email_duplicate($email) {
+        global $DB;
+        if (sizeof($DB->get_fieldset_select('user', 'email', "email = '{$email}'")) > 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
