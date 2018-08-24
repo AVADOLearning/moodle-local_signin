@@ -15,7 +15,9 @@ Feature: Log in to platform
       | username   | firstname | lastname | email                | password |
       | student1   | Student   | 1        | student1@example.com | pass1    |
       | student2   | Student   | 2        | student2@example.com | pass2    |
-      | cohortless | Student   | 3        | student3@example.com | pass3    |
+      | samemail1  | Samemail  | 1        | samemail@example.com | pass3    |
+      | samemail2  | Samemail  | 2        | samemail@example.com | pass4    |
+      | cohortless | Student   | 3        | student3@example.com | pass5    |
     And the following "cohorts" exist:
       | idnumber | name     |
       | cht1     | Cohort 1 |
@@ -133,3 +135,12 @@ Feature: Log in to platform
     When I set the field "username" to "STUDENT1@EXAMPLE.COM"
     And I press "Proceed"
     Then "password" "field" should be visible
+
+  @javascript
+  Scenario: 13. Can't login with duplicate email address, notification triggered
+    Given the following "core" configuration values are set:
+      | authloginviaemail | 1 |
+    When I set the field "username" to "samemail@example.com"
+    And I press "Proceed"
+    Then I should see "Field must be unique (if you're using your email, maybe try your username)."
+    And "password" "field" should not be visible

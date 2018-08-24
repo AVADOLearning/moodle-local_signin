@@ -100,7 +100,7 @@ Feature: Log in to platform
     And the URL path should be "/"
 
   @javascript
-  Scenario: 09. Providing email adress associated to multiple users triggers a notification and does not advance the signin process.
+  Scenario: 09. Providing email address associated to multiple users triggers a notification and does not advance the signin process.
     Given I set the field "username" to "samemail@example.com"
     When I press "Proceed"
     Then I should see "Field must be unique (if you're using your email, maybe try your username)."
@@ -108,3 +108,8 @@ Feature: Log in to platform
     And I should not see "Password"
     And the URL path should be "/local/signin/index.php"
 
+  @javascript
+  Scenario: 10. Logging in with email address
+    Given I set the field "username" to "student1@example.com"
+    And I press "Proceed"
+    Then "password" "field" should be visible

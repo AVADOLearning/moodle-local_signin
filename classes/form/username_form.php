@@ -105,7 +105,7 @@ class username_form extends no_sesskey_form {
     }
 
     /**
-     * Confirms whether the given email address exists
+     * Confirms whether the given email address exists and neither deleted, nor suspended.
      *
      * @param $username
      * @return bool
