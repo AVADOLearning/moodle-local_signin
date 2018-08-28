@@ -4,7 +4,9 @@
  * Username form
  *
  * @author Earle Skinner <earle.skinner@avadolearning.com>
- * @copyright 2017 AVADO Learning
+ * @updated Magyar-Hunor Tamas <magyar-hunor.tamas@avadolearning.com>
+ *
+ * @copyright 2018 AVADO Learning
  */
 
 namespace local_signin\form;
@@ -105,7 +107,7 @@ class username_form extends no_sesskey_form {
     }
 
     /**
-     * Confirms whether the given email address exists and neither deleted, nor suspended.
+     * Confirms whether the given email address exists (and neither deleted, nor suspended).
      *
      * @param $username
      * @return bool
@@ -117,7 +119,7 @@ class username_form extends no_sesskey_form {
     }
 
     /**
-     * Returns an array with all the email occurences
+     * Returns true if finds the email more than once.
      *
      * @param $username
      * @return boolean
@@ -130,5 +132,4 @@ class username_form extends no_sesskey_form {
             return false;
         }
     }
-
 }
