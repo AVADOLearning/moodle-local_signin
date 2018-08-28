@@ -39,8 +39,9 @@ Feature: Log in to platform
 
   @javascript
   Scenario: 02. Failing to provide a username triggers a notification and does not advance the signin process.
+    Given I set the field "username" to ""
     Given I press "Proceed"
-    Then I should see "This username does not exist or it is not active"
+    Then I should see "Please provide a username."
     And I should see "Username"
     And I should not see "Password"
     And the URL path should be "/local/signin/index.php"

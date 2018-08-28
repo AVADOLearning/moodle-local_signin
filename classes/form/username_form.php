@@ -61,18 +61,16 @@ class username_form extends no_sesskey_form {
     public function validation($data, $files) {
         global $CFG, $PAGE;
 
-        if (!array_key_exists('username', $data)) {
+        if (!isset($data['username']) || $data['username'] == '') {
             return array('username' => util::lang_string('form_username_not_provided'));
         }
 
         $username = $data['username'];
 
-        if (static::active_user_by_email_exists($username)) {
-            if (static::is_email_duplicate($username)) {
-                return array('username' => util::lang_string('duplicate_field'));
-            } else {
-                return;
-            }
+        if (static::active_user_by_email_exists($username) && static::is_email_duplicate($username)) {
+            return array('username' => util::lang_string('duplicate_field'));
+        } elseif (static::active_user_by_email_exists($username)) {
+            return;
         }
 
         if (strlen($username) == 0 || !static::active_user_exists($username)) {
@@ -126,7 +124,7 @@ class username_form extends no_sesskey_form {
      */
     public static function is_email_duplicate($email) {
         global $DB;
-        if (sizeof($DB->get_fieldset_select('user', 'email', "email = '{$email}'")) > 1) {
+        if (($DB->count_records('user', array('email' => "{$email}"))) > 1) {
             return true;
         } else {
             return false;
