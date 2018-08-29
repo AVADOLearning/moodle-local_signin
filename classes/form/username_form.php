@@ -32,9 +32,9 @@ class username_form extends no_sesskey_form {
         }
 
         $user_attributes = array('placeholder'   => util::lang_string('form_username_placeholder'),
-                                 'additionalcss' => util::lang_string('form_username_button_class'),
-                                 'autofocus'     => '',
-                                 'value'         => $username);
+            'additionalcss' => util::lang_string('form_username_button_class'),
+            'autofocus'     => '',
+            'value'         => $username);
         $mform->addElement('text', 'username', util::lang_string('form_username_label'), $user_attributes);
         $mform->setType('username', PARAM_USERNAME);
 
@@ -65,12 +65,10 @@ class username_form extends no_sesskey_form {
             return array('username' => util::lang_string('form_username_not_provided'));
         }
 
-        $username = $data['username'];
+        $username = $data['username']; // this can be username or email used to login
 
-        if (static::active_user_by_email_exists($username) && static::is_email_duplicate($username)) {
+        if (static::number_of_accounts_for_user($username) > 1) {
             return array('username' => util::lang_string('duplicate_field'));
-        } elseif (static::active_user_by_email_exists($username)) {
-            return;
         }
 
         if (strlen($username) == 0 || !static::active_user_exists($username)) {
@@ -97,37 +95,24 @@ class username_form extends no_sesskey_form {
      * Confirms whether the username belongs to an active user (neither deleted, nor suspended).
      *
      * @param $username
-     * @return boolean
-     */
-    public static function active_user_exists($username) {
-        global $DB;
-        return $DB->record_exists('user', array('username' => $username, 'deleted' => 0, 'suspended' => 0));
-    }
-
-    /**
-     * Confirms whether the given email address exists (and neither deleted, nor suspended).
-     *
-     * @param $username
      * @return bool
      * @throws \dml_exception
      */
-    public static function active_user_by_email_exists($username) {
+    public static function active_user_exists($username) {
         global $DB;
-        return $DB->record_exists('user', array('email' => $username, 'deleted' => 0, 'suspended' => 0));
+        $select = "deleted = 0 AND suspended = 0 AND (username = ? OR email = ?)";
+        return $DB->record_exists_select('user', $select, array($username, $username));
     }
 
     /**
-     * Returns true if finds the email more than once.
+     * Returns number of accounts with given argument, if that is an email
      *
-     * @param $username
-     * @return boolean
+     * @param $email
+     * @return int
+     * @throws \dml_exception
      */
-    public static function is_email_duplicate($email) {
+    public static function number_of_accounts_for_user($email) {
         global $DB;
-        if (($DB->count_records('user', array('email' => "{$email}"))) > 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return $DB->count_records('user', array('email' => "{$email}"));
     }
 }
