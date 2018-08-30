@@ -32,9 +32,9 @@ class username_form extends no_sesskey_form {
         }
 
         $user_attributes = array('placeholder'   => util::lang_string('form_username_placeholder'),
-            'additionalcss' => util::lang_string('form_username_button_class'),
-            'autofocus'     => '',
-            'value'         => $username);
+                                 'additionalcss' => util::lang_string('form_username_button_class'),
+                                 'autofocus'     => '',
+                                 'value'         => $username);
         $mform->addElement('text', 'username', util::lang_string('form_username_label'), $user_attributes);
         $mform->setType('username', PARAM_USERNAME);
 
