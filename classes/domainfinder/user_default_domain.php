@@ -25,20 +25,14 @@ defined('MOODLE_INTERNAL') || die;
  * or other portal. It allows Moodle to detect users attempting to login via the
  * wrong domain and correct it for them.
  */
-class user_default_domain {
+class user_default_domain
+{
     /**
-     * Username.
+     * User details.
      *
      * @var string
      */
-    public $username;
-
-    /**
-     * Email address.
-     *
-     * @var string
-     */
-    public $email;
+    public $userdetail;
 
     /**
      * Correct domain.
@@ -54,10 +48,10 @@ class user_default_domain {
      * @param string|null $email
      * @param string|null $domain
      */
-    public function __construct($username=null, $email=null, $domain=null) {
-        $this->username = $username;
-        $this->email    = $email;
-        $this->domain   = $domain;
+    public function __construct($userdetail = null, $domain = null)
+    {
+        $this->userdetail = $userdetail;
+        $this->domain = $domain;
     }
 
     /**
@@ -67,7 +61,8 @@ class user_default_domain {
      *
      * @return user_default_domain
      */
-    public static function get($input) {
+    public static function get($input)
+    {
         global $CFG, $DB;
 
         $result = new user_default_domain(
@@ -78,30 +73,35 @@ class user_default_domain {
 
         // Assign a domain finder (either the one stored in $CFG, or the default one).
         $class = property_exists($CFG, 'local_signin_domainfinder')
-                ? $CFG->local_signin_domainfinder
-                : static_default_domain_finder::class;
+            ? $CFG->local_signin_domainfinder
+            : static_default_domain_finder::class;
 
-        $where =  'LOWER(username) = LOWER(:username) OR LOWER(email) = LOWER(:email)';
+        $where = 'LOWER(username) = LOWER(:username) OR LOWER(email) = LOWER(:email)';
         $params = array(
             'username' => $input,
-            'email'    => $input,
+            'email' => $input,
         );
 
         try {
             // If the username is found in the database, set up the result accordingly.
             $user = $DB->get_record_select(
-                    'user', $where, $params, '*', MUST_EXIST);
+                'user', $where, $params, '*', MUST_EXIST);
 
             /** @var default_domain_finder $domainfinder */
             $domainfinder = (is_object($class)) ? $class : new $class($user);
 
             if (strtolower(trim($user->username)) !== strtolower(trim($input)) &&
-                    !$domainfinder->allow_email_authentication()) {
+                !$domainfinder->allow_email_authentication()
+            ) {
                 return $result;
             }
 
-            $result->username = $user->username;
-            $result->email = $user->email;
+            if (strpos($input, '@') > 0) {
+                $result->userdetail = $user->email;
+            } else {
+                $result->userdetail = $user->username;
+            }
+
             try {
                 // If the user has a brand default domain (via a cohort), update $result accordingly.
                 $result->domain = $domainfinder->get_user_domain();

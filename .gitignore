@@ -5,3 +5,8 @@
 
 # Build artifacts
 /amd/build/
+
+/vendor/
+/composer.lock
+
+.idea/
