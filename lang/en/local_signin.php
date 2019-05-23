@@ -132,3 +132,4 @@ $string['form_password_forgot_label']  = 'Forgotten your password?';
 $string['email_required']              = 'An email address is required.';
 $string['username_required']           = 'An username is required.';
 $string['form_page_title']             = 'Forgotten username or password';
+$string['form_account_recover_label'] = 'My Account is Locked.';

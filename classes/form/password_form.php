@@ -57,5 +57,10 @@ class password_form extends no_sesskey_form {
             util::lang_string('form_userpass_forgot_class'),
             new moodle_url('/local/signin/forgot.php'),
             util::lang_string('form_password_forgot_label')));
+
+        $mform->addElement('html', sprintf(util::ELEMENT_WRAPPER,
+            util::lang_string('form_userpass_forgot_class'),
+            new moodle_url('/local/recoveraccount/index.php'),
+            util::lang_string('form_account_recover_label')));
     }
 }
