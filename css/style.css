@@ -1,4 +1,6 @@
 #page-local-signin-index .alert-info {
-    margin-left:700px;
-    margin-bottom:600px;
+    margin:0 auto;
+    position:relative;
+    left:0px;
+    bottom:0px;
 }
