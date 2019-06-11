@@ -15,4 +15,4 @@ $plugin->version = 2016040101;
 $plugin->maturity = MATURITY_ALPHA;
 
 $plugin->requires = 2014051200;
-$plugin->dependencies = array('local_recoveraccount' => 2019052000); // Plugin depends on local recoveryaccount for unlocking users locked account
+$plugin->dependencies = ['local_recoveraccount' => 2019061100]; // Plugin depends on local recoveryaccount for unlocking users locked account
