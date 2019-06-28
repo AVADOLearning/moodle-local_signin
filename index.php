@@ -18,6 +18,7 @@ use local_signin\form\password_form;
 use local_signin\form\username_form;
 use local_signin\helper\login_helper;
 use local_signin\util;
+use local_helpdesk\Services\LinkService;
 
 require_once dirname(dirname(__DIR__)) . '/config.php';
 /** @var moodle_page $PAGE */
@@ -148,7 +149,11 @@ if ($helper->is_username_set_in_auth_global_vars()) {
 
     echo $renderer->password_form($passwordform);
     if( isset($loginFailCount) &&  ($loginFailCount > 2) ) {
-        echo "<a href='/local/helpdesk/index.php'>Submit support request?</a>";
+        $linkService = new LinkService();
+        $url = $linkService->getActionLink('support');
+        $url = new moodle_url($url);
+
+        echo "<a href=$url>Submit support request?</a>";
     }
 }  else {
     if ($paramusername = $helper->get_username_from_querystring_or_cookie()) {
