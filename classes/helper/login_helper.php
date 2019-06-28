@@ -279,6 +279,7 @@ class login_helper {
 
             // Let's get them all set up.
             complete_user_login($user);
+            unset_user_preference('login_failed_count_since_success', $user);
             return true;
         }
 
@@ -530,5 +531,19 @@ class login_helper {
         global $frm;
         $frm = null;
         set_moodle_cookie('');
+    }
+
+    /**
+     * Get user failed login count
+     *
+     * @param $userName
+     * @return int|null
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public function get_user_login_failCount ($userName){
+        global $DB;
+        $userTemp = $DB->get_record('user', array('username' => $userName));
+        return get_user_preferences('login_failed_count_since_success', null, $userTemp);
     }
 }

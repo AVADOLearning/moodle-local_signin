@@ -143,8 +143,14 @@ if (!$nojs) {
 }
 
 if ($helper->is_username_set_in_auth_global_vars()) {
+    global $frm;
+    $loginFailCount = $helper->get_user_login_failCount($frm->username);
+
     echo $renderer->password_form($passwordform);
-} else {
+    if( isset($loginFailCount) &&  ($loginFailCount > 2) ) {
+        echo "<a href='/local/helpdesk/index.php'>Submit support request?</a>";
+    }
+}  else {
     if ($paramusername = $helper->get_username_from_querystring_or_cookie()) {
         $passwordform->set_data(array(
             'username' => $paramusername,
