@@ -152,8 +152,9 @@ if ($helper->is_username_set_in_auth_global_vars()) {
         $linkService = new LinkService();
         $url = $linkService->getActionLink('support');
         $url = new moodle_url($url);
+        $urlTitle = get_string('support_request_link', util::MOODLE_COMPONENT);
 
-        echo "<a href=$url>Submit support request?</a>";
+        echo "<a href=$url>$urlTitle</a>";
     }
 }  else {
     if ($paramusername = $helper->get_username_from_querystring_or_cookie()) {
