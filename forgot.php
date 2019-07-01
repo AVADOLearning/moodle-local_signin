@@ -12,6 +12,8 @@ use local_signin\event\password_reset_request_complete;
 use local_signin\form\forgot_form;
 use local_signin\helper\recovery_helper;
 use local_signin\util;
+use local_helpdesk\Services\LinkService;
+
 
 require_once dirname(dirname(__DIR__)) . '/config.php';
 /** @var core_renderer $OUTPUT */
@@ -145,10 +147,13 @@ if ($token) {
             $flashmsg = $OUTPUT->notification($flashmsg, $flashclass);
         }
 
+        list($url, $urlTitle) = LinkService::getActionLink('support');
+
         echo
             $OUTPUT->header(),
             $flashmsg,
             $mform->render(),
+            "<a href=$url>$urlTitle</a>",
             $OUTPUT->footer();
     }
 }

@@ -149,11 +149,7 @@ if ($helper->is_username_set_in_auth_global_vars()) {
 
     echo $renderer->password_form($passwordform);
     if( isset($loginFailCount) &&  ($loginFailCount > 2) ) {
-        $linkService = new LinkService();
-        $url = $linkService->getActionLink('support');
-        $url = new moodle_url($url);
-        $urlTitle = get_string('support_request_link', util::MOODLE_COMPONENT);
-
+        list($url, $urlTitle) = LinkService::getActionLink('support');
         echo "<a href=$url>$urlTitle</a>";
     }
 }  else {
