@@ -149,8 +149,7 @@ if ($helper->is_username_set_in_auth_global_vars()) {
 
     echo $renderer->password_form($passwordform);
     if (isset($loginFailCount) &&  ($loginFailCount > 2)) {
-        list($url, $urlTitle) = SigninLinkHelper::getActionLink();
-        echo "<a href=$url>$urlTitle</a>";
+        echo SigninLinkHelper::getActionLink();
     }
 }  else {
     if ($paramusername = $helper->get_username_from_querystring_or_cookie()) {

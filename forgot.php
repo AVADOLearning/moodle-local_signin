@@ -146,13 +146,11 @@ if ($token) {
             $flashmsg = $OUTPUT->notification($flashmsg, $flashclass);
         }
 
-        list($url, $urlTitle) = SigninLinkHelper::getActionLink();
-
         echo
             $OUTPUT->header(),
             $flashmsg,
             $mform->render(),
-            "<a href=$url>$urlTitle</a>",
+            SigninLinkHelper::getActionLink();
             $OUTPUT->footer();
     }
 }
