@@ -148,8 +148,8 @@ if ($helper->is_username_set_in_auth_global_vars()) {
     $loginFailCount = $helper->get_user_login_failCount($frm->username);
 
     echo $renderer->password_form($passwordform);
-    if( isset($loginFailCount) &&  ($loginFailCount > 2) ) {
-        list($url, $urlTitle) = LinkService::getActionLink('support');
+    if (isset($loginFailCount) &&  ($loginFailCount > 2)) {
+        list($url, $urlTitle) = LinkService::getActionLink();
         echo "<a href=$url>$urlTitle</a>";
     }
 }  else {

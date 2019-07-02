@@ -541,7 +541,8 @@ class login_helper {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function get_user_login_failCount ($userName){
+    public function get_user_login_failCount($userName)
+    {
         global $DB;
         $userTemp = $DB->get_record('user', array('username' => $userName));
         return get_user_preferences('login_failed_count_since_success', null, $userTemp);

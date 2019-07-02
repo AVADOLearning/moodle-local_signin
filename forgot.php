@@ -147,7 +147,7 @@ if ($token) {
             $flashmsg = $OUTPUT->notification($flashmsg, $flashclass);
         }
 
-        list($url, $urlTitle) = LinkService::getActionLink('support');
+        list($url, $urlTitle) = LinkService::getActionLink();
 
         echo
             $OUTPUT->header(),
