@@ -148,7 +148,7 @@ if (!$nojs) {
 if ($helper->is_username_set_in_auth_global_vars()) {
     global $frm;
 
-    $loginFailCount = $helper->get_user_login_failCount($frm->username);
+    $loginFailCount = $helper->get_user_login_fail_count($frm->username);
 
     echo $renderer->password_form($passwordform);
     if (isset($loginFailCount) && ($loginFailCount > 2)) {

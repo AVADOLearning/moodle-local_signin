@@ -575,30 +575,15 @@ class login_helper
     /**
      * Get user failed login count
      *
-     * @param $userName
+     * @param $username
      * @return int|null
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function get_user_login_failCount($userName)
+    public function get_user_login_fail_count($username)
     {
         global $DB;
-        $userTemp = $DB->get_record('user', ['username' => $userName]);
+        $userTemp = $DB->get_record('user', ['username' => $username]);
         return get_user_preferences('login_failed_count_since_success', null, $userTemp);
-    }
-
-    /**
-     * Check whether helpdesk feature is enabled
-     *
-     * @return int/bool
-     */
-    public function is_helpdesk_enabled()
-    {
-        global $DB;
-        try {
-            return (int) $DB->get_field('helpdesk_settings', 'value', ['name' => 'showgethelp']);
-        } catch (\dml_exception $e) {
-            return false;
-        }
     }
 }
