@@ -13,11 +13,14 @@ use local_signin\form\forgot_form;
 use local_signin\helper\recovery_helper;
 use local_signin\util;
 use local_helpdesk\Helper\SigninLinkHelper;
+use local_signin\helper\login_helper;
 
 require_once dirname(dirname(__DIR__)) . '/config.php';
 /** @var core_renderer $OUTPUT */
 /** @var moodle_page   $PAGE */
 require_once "{$CFG->dirroot}/login/set_password_form.php";
+
+$helper = new login_helper();
 
 $flash = optional_param('flash', -1, PARAM_INT);
 $token = optional_param('token', '', PARAM_ALPHANUM);
@@ -149,8 +152,10 @@ if ($token) {
         echo
             $OUTPUT->header(),
             $flashmsg,
-            $mform->render(),
-            SigninLinkHelper::getActionLink();
-            $OUTPUT->footer();
+            $mform->render();
+            if ($helper->is_helpdesk_enabled()) {
+                echo SigninLinkHelper::getActionLink();
+            }
+            echo $OUTPUT->footer();
     }
 }

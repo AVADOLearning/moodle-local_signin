@@ -127,8 +127,9 @@ if ($helper->authenticate()) {
         echo $OUTPUT->header();
         echo $OUTPUT->heading(get_string('restoredaccount'));
         echo $OUTPUT->box(get_string('restoredaccountinfo'), 'generalbox boxaligncenter');
-        require_once($CFG->dirroot.'/login/restored_password_form.php'); // Use our "supplanter" login_forgot_password_form. MDL-20846
-        $login_forgot_password_frm = new login_forgot_password_form($CFG->wwwroot . '/login/forgot_password.php', array('username' => $username));
+        require_once($CFG->dirroot . '/login/restored_password_form.php'); // Use our "supplanter" login_forgot_password_form. MDL-20846
+        $login_forgot_password_frm = new login_forgot_password_form($CFG->wwwroot . '/login/forgot_password.php',
+            array('username' => $username));
         echo $renderer->forgot_password_form($login_forgot_password_frm);
         echo $OUTPUT->footer();
         die;
@@ -145,13 +146,15 @@ if (!$nojs) {
 
 if ($helper->is_username_set_in_auth_global_vars()) {
     global $frm;
-    $loginFailCount = $helper->get_user_login_failCount($frm->username);
+    if ($helper->is_helpdesk_enabled()) {
+        $loginFailCount = $helper->get_user_login_failCount($frm->username);
+    }
 
     echo $renderer->password_form($passwordform);
-    if (isset($loginFailCount) &&  ($loginFailCount > 2)) {
+    if (isset($loginFailCount) && ($loginFailCount > 2)) {
         echo SigninLinkHelper::getActionLink();
     }
-}  else {
+} else {
     if ($paramusername = $helper->get_username_from_querystring_or_cookie()) {
         $passwordform->set_data(array(
             'username' => $paramusername,
