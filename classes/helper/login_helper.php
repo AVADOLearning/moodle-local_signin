@@ -544,7 +544,7 @@ class login_helper {
     public function get_user_login_failCount($userName)
     {
         global $DB;
-        $userTemp = $DB->get_record('user', array('username' => $userName));
+        $userTemp = $DB->get_record('user', ['username' => $userName]);
         return get_user_preferences('login_failed_count_since_success', null, $userTemp);
     }
 }
