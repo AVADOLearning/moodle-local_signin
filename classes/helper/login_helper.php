@@ -13,8 +13,6 @@ global $CFG;
 
 use \core\notification;
 use moodle_url;
-use phpDocumentor\Reflection\Types\Boolean;
-use phpDocumentor\Reflection\Types\Integer;
 
 require_once "{$CFG->dirroot}/login/lib.php";
 

@@ -26,6 +26,7 @@ require_once dirname(dirname(__DIR__)) . '/config.php';
 redirect_if_major_upgrade_required();
 
 $helper = new login_helper();
+$signInHelper = new SigninLinkHelper();
 
 $helper->handle_cancel_request();
 
@@ -146,13 +147,12 @@ if (!$nojs) {
 
 if ($helper->is_username_set_in_auth_global_vars()) {
     global $frm;
-    if ($helper->is_helpdesk_enabled()) {
-        $loginFailCount = $helper->get_user_login_failCount($frm->username);
-    }
+
+    $loginFailCount = $helper->get_user_login_failCount($frm->username);
 
     echo $renderer->password_form($passwordform);
     if (isset($loginFailCount) && ($loginFailCount > 2)) {
-        echo SigninLinkHelper::getActionLink();
+        echo $signInHelper->getActionLink();
     }
 } else {
     if ($paramusername = $helper->get_username_from_querystring_or_cookie()) {
