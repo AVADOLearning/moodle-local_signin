@@ -12,8 +12,7 @@ use local_signin\event\password_reset_request_complete;
 use local_signin\form\forgot_form;
 use local_signin\helper\recovery_helper;
 use local_signin\util;
-use local_helpdesk\Services\LinkService;
-
+use local_helpdesk\Helper\SigninLinkHelper;
 
 require_once dirname(dirname(__DIR__)) . '/config.php';
 /** @var core_renderer $OUTPUT */
@@ -147,7 +146,7 @@ if ($token) {
             $flashmsg = $OUTPUT->notification($flashmsg, $flashclass);
         }
 
-        list($url, $urlTitle) = LinkService::getActionLink();
+        list($url, $urlTitle) = SigninLinkHelper::getActionLink();
 
         echo
             $OUTPUT->header(),
