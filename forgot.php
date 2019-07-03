@@ -25,7 +25,8 @@ $token = optional_param('token', '', PARAM_ALPHANUM);
 $forgotten = get_string('form_page_title', util::MOODLE_COMPONENT);
 $login     = get_string('login');
 
-$signInHelper = new SigninLinkHelper();
+global $DB;
+$signInHelper = new SigninLinkHelper($DB);
 
 if (version_compare(moodle_major_version(), '3.4', '<')) {
     $PAGE->https_required();

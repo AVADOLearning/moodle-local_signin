@@ -26,7 +26,8 @@ require_once dirname(dirname(__DIR__)) . '/config.php';
 redirect_if_major_upgrade_required();
 
 $helper = new login_helper();
-$signInHelper = new SigninLinkHelper();
+global $DB;
+$signInHelper = new SigninLinkHelper($DB);
 
 $helper->handle_cancel_request();
 
