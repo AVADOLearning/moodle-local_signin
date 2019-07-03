@@ -50,6 +50,7 @@ $site = get_site();
 $PAGE->set_title($site->fullname);
 $PAGE->set_heading($site->fullname);
 $helper->additional_meta_tags();
+$PAGE->requires->css(new moodle_url('/local/signin/css/style.css'));
 
 /** @var local_signin_renderer $renderer */
 $renderer = $PAGE->get_renderer(util::MOODLE_COMPONENT);

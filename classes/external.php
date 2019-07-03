@@ -48,8 +48,7 @@ class external extends external_api {
     public static function check_domain_returns() {
         return new external_single_structure(array(
             'domain'   => new external_value(PARAM_URL, 'Domain for user associated brand'),
-            'username' => new external_value(PARAM_USERNAME, 'Username'),
-            'email'    => new external_value(PARAM_TEXT, 'User email'),
+            'userdetail' => new external_value(PARAM_USERNAME, 'Username or email entered by user')
         ));
     }
 }
