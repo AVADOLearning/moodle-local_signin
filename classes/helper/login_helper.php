@@ -283,11 +283,9 @@ class login_helper
             if (isguestuser($user)) {
                 // no predefined language for guests - use existing session or default site lang
                 unset($user->lang);
-            } else {
-                if (!empty($user->lang)) {
-                    // unset previous session language - use user preference instead
-                    unset($SESSION->lang);
-                }
+            } elseif (!empty($user->lang)){
+                // unset previous session language - use user preference instead
+                unset($SESSION->lang);
             }
 
             // If the user needs to be confirmed, exit early
