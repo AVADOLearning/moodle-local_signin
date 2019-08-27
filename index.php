@@ -94,10 +94,34 @@ if (!$helper->is_auth_global_vars_populated()) {
         ));
     }
 
+    global $CFG;
+    if (!empty($CFG->rememberusername)) {
+        $cookiename = 'REMEMBERUNAME';
+        if (isset($_COOKIE[$cookiename])) {
+            $username = rc4decrypt($_COOKIE[$cookiename]);
+        }
+        global $frm;
+        $frm->username = $username;
+        $passwordform->set_data(array(
+            'username' => $username,
+            'rememberme' => 1,
+        ));
+    }
+
     if ($passwordform->is_submitted() &&
         $passwordform->is_validated()) {
         $values = $passwordform->get_data();
         $helper->set_passform_params_in_auth_global_vars($values);
+
+        //Setting loginas cookie
+        if (!empty($values->rememberme)) {
+            global $CFG;
+            // Set username cookie for 60 days.
+            $cookiesecure = is_moodle_cookie_secure();
+            $Loggedinusername = $values->username;
+            setcookie('REMEMBERUNAME', rc4encrypt($Loggedinusername), time() + (DAYSECS * 60), $CFG->sessioncookiepath,
+                $CFG->sessioncookiedomain, $cookiesecure, $CFG->cookiehttponly);
+        }
     }
 }
 
@@ -127,8 +151,9 @@ if ($helper->authenticate()) {
         echo $OUTPUT->header();
         echo $OUTPUT->heading(get_string('restoredaccount'));
         echo $OUTPUT->box(get_string('restoredaccountinfo'), 'generalbox boxaligncenter');
-        require_once($CFG->dirroot.'/login/restored_password_form.php'); // Use our "supplanter" login_forgot_password_form. MDL-20846
-        $login_forgot_password_frm = new login_forgot_password_form($CFG->wwwroot . '/login/forgot_password.php', array('username' => $username));
+        require_once($CFG->dirroot . '/login/restored_password_form.php'); // Use our "supplanter" login_forgot_password_form. MDL-20846
+        $login_forgot_password_frm = new login_forgot_password_form($CFG->wwwroot . '/login/forgot_password.php',
+            array('username' => $username));
         echo $renderer->forgot_password_form($login_forgot_password_frm);
         echo $OUTPUT->footer();
         die;
