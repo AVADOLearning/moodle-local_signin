@@ -16,8 +16,7 @@ use moodle_url;
 
 require_once "{$CFG->dirroot}/login/lib.php";
 
-class login_helper
-{
+class login_helper {
     /**
      * List of available authentication plugins
      *
@@ -37,8 +36,7 @@ class login_helper
      *
      * @param bool $load_auth_plugins
      */
-    public function __construct($load_auth_plugins = true)
-    {
+    public function __construct($load_auth_plugins = true) {
         global $SESSION, $USER;
 
         // Clear any notifications
@@ -74,8 +72,7 @@ class login_helper
      *
      * @return void
      */
-    public function use_auth_plugin($plugin)
-    {
+    public function use_auth_plugin($plugin) {
         $this->authplugins[] = $plugin;
         $this->currentauth = $plugin;
     }
@@ -85,8 +82,7 @@ class login_helper
      *
      * @return bool
      */
-    public function has_notifications()
-    {
+    public function has_notifications() {
         global $SESSION;
         return isset($SESSION->notifications) && count($SESSION->notifications) > 0;
     }
@@ -94,8 +90,7 @@ class login_helper
     /**
      * Add additional meta tags to the page header
      */
-    public function additional_meta_tags()
-    {
+    public function additional_meta_tags() {
         global $CFG;
 
         // Try to prevent searching for sites that allow sign-up.
@@ -108,8 +103,7 @@ class login_helper
     /**
      * If the cancel parameter is true. redirect to the home page
      */
-    public function handle_cancel_request()
-    {
+    public function handle_cancel_request() {
         $cancel = optional_param('cancel', 0, PARAM_BOOL);
         if ($cancel) {
             // Redirect to frontpage, needed for loginhttps
@@ -121,8 +115,7 @@ class login_helper
      * If the test session parameter matches the current user, redirect to the url in the session
      * Tests if sessions are working correctly
      */
-    public function handle_testsession_request()
-    {
+    public function handle_testsession_request() {
         global $SESSION, $USER;
 
         $testsession = optional_param('testsession', 0, PARAM_INT);
@@ -146,8 +139,7 @@ class login_helper
     /**
      * If the session has timed out, write a notification
      */
-    public function handle_session_timeout()
-    {
+    public function handle_session_timeout() {
         global $SESSION;
 
         /// Check for timed out sessions
@@ -162,18 +154,16 @@ class login_helper
      * The login process uses global variables
      * Reset them
      */
-    public function reset_auth_global_vars()
-    {
+    public function reset_auth_global_vars() {
         global $frm, $user;
-        $frm = false;
+        $frm  = false;
         $user = false;
     }
 
     /**
      * Allow each auth plugin to bootstrap the login page
      */
-    public function auth_plugin_bootstrapper()
-    {
+    public function auth_plugin_bootstrapper() {
         if (!$this->authplugins) {
             return;
         }
@@ -187,8 +177,7 @@ class login_helper
      *
      * @return bool
      */
-    public function is_auth_global_vars_populated()
-    {
+    public function is_auth_global_vars_populated() {
         global $frm, $user;
         return ($user !== false || $frm !== false) && !$this->has_notifications();
     }
@@ -198,8 +187,7 @@ class login_helper
      *
      * @return array(bool, string)
      */
-    public function user_needs_to_restore_account()
-    {
+    public function user_needs_to_restore_account() {
         global $frm, $user;
         if (!isset($user) &&
             isset($frm) &&
@@ -217,8 +205,7 @@ class login_helper
      * @param string $username
      * @return array(bool, string)
      */
-    public function user_needs_to_confirm_account($username = '')
-    {
+    public function user_needs_to_confirm_account($username = '') {
         global $DB;
         $user = $DB->get_record('user', array('username' => $username));
         if (isset($user) && $user && !$user->confirmed) {
@@ -233,8 +220,7 @@ class login_helper
      *
      * @return bool
      */
-    public function authenticate()
-    {
+    public function authenticate() {
         global $CFG, $frm, $SESSION, $user;
 
         if ($this->has_notifications()) {
@@ -280,11 +266,9 @@ class login_helper
             if (isguestuser($user)) {
                 // no predefined language for guests - use existing session or default site lang
                 unset($user->lang);
-            } else {
-                if (!empty($user->lang)) {
-                    // unset previous session language - use user preference instead
-                    unset($SESSION->lang);
-                }
+            } else if (!empty($user->lang)) {
+                // unset previous session language - use user preference instead
+                unset($SESSION->lang);
             }
 
             // If the user needs to be confirmed, exit early
@@ -306,8 +290,7 @@ class login_helper
      *
      * @param bool $remember
      */
-    public function set_remember_me()
-    {
+    public function set_remember_me() {
         global $frm, $CFG, $USER;
 
         if (!empty($CFG->nolastloggedin)) {
@@ -330,8 +313,7 @@ class login_helper
      *
      * @return bool
      */
-    public function user_needs_to_change_their_password()
-    {
+    public function user_needs_to_change_their_password() {
         global $USER;
 
         if (!$this->currentauth) {
@@ -342,7 +324,7 @@ class login_helper
             $days2expire = $this->currentauth->password_expire($USER->username);
             if (intval($days2expire) > 0 && intval($days2expire) < intval($this->currentauth->config->expiration_warning)) {
                 return true;
-            } elseif (intval($days2expire) < 0) {
+            } elseif (intval($days2expire) < 0 ) {
                 return true;
             }
         }
@@ -355,8 +337,7 @@ class login_helper
      *
      * @return array(bool, int, int, string)
      */
-    public function get_user_expiration_information()
-    {
+    public function get_user_expiration_information() {
         global $USER;
 
         if (!isset($USER)) {
@@ -390,8 +371,7 @@ class login_helper
      *
      * @return mixed|string
      */
-    public function get_login_url()
-    {
+    public function get_login_url() {
         global $CFG;
 
         $url = "{$CFG->wwwroot}/local/signin/index.php";
@@ -408,8 +388,7 @@ class login_helper
      *
      * @return moodle_url
      */
-    public function get_test_session_url()
-    {
+    public function get_test_session_url() {
         global $USER;
 
         return new moodle_url(
@@ -421,8 +400,7 @@ class login_helper
      *
      * @return void
      */
-    public function set_wants_url()
-    {
+    public function set_wants_url() {
         global $SESSION;
 
         $url = optional_param('returnurl', '', PARAM_PATH);
@@ -437,24 +415,21 @@ class login_helper
      *
      * @return string
      */
-    public function get_return_url()
-    {
+    public function get_return_url() {
         return core_login_get_return_url();
     }
 
     /**
      * Redirect to the log out page
      */
-    public function redirect_to_logout_page()
-    {
+    public function redirect_to_logout_page() {
         redirect(new moodle_url('/login/logout.php'));
     }
 
     /**
      * Create a new global form variable to save the login information
      */
-    public function create_new_user_object()
-    {
+    public function create_new_user_object() {
         global $frm;
 
         if (!isset($frm) || !is_object($frm)) {
@@ -467,8 +442,7 @@ class login_helper
      *
      * @param \stdClass|null $data
      */
-    public function set_userform_params_in_auth_global_vars($data = null)
-    {
+    public function set_userform_params_in_auth_global_vars($data = null) {
         global $frm;
 
         if (!$data) {
@@ -484,8 +458,7 @@ class login_helper
      *
      * @return array(string, integer, url)
      */
-    public function get_userform_params_from_auth_global_vars()
-    {
+    public function get_userform_params_from_auth_global_vars() {
         global $frm;
 
         if (isset($frm) && $frm && property_exists($frm, 'username') && $frm->username) {
@@ -503,8 +476,7 @@ class login_helper
      *
      * @return mixed|string
      */
-    public function get_username_from_querystring_or_cookie()
-    {
+    public function get_username_from_querystring_or_cookie() {
         if ($this->authplugins[0]->authtype !== 'shibboleth') {  // See bug 5184
             if (!empty($_GET["username"])) {
                 return clean_param($_GET["username"], PARAM_RAW); // we do not want data from _POST here
@@ -520,8 +492,7 @@ class login_helper
      *
      * @param \stdClass|null $data
      */
-    public function set_passform_params_in_auth_global_vars($data)
-    {
+    public function set_passform_params_in_auth_global_vars($data) {
         global $frm;
 
         if (!$data) {
@@ -538,8 +509,7 @@ class login_helper
      *
      * @return bool
      */
-    public function is_username_set_in_auth_global_vars()
-    {
+    public function is_username_set_in_auth_global_vars() {
         global $frm;
         return isset($frm->username) && $frm->username && strlen($frm->username) > 0;
     }
@@ -549,23 +519,20 @@ class login_helper
      *
      * @return bool
      */
-    public function is_user_already_loggedin()
-    {
+    public function is_user_already_loggedin() {
         return isloggedin() and !isguestuser();
     }
 
     /**
      * Clear the username from
      */
-    public function clear_username_in_auth_global_vars()
-    {
+    public function clear_username_in_auth_global_vars() {
         global $frm;
         $frm = null;
         set_moodle_cookie('');
 
         $cookiename = 'REMEMBERUNAME';
-        if (isset($_COOKIE[$cookiename])) {
-            // Delete old cookie.
+        if(isset($_COOKIE[$cookiename])) {
             unset($_COOKIE[$cookiename]);
             setcookie($cookiename, '', time() - HOURSECS, '/');
         }
