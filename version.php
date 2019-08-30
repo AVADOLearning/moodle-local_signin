@@ -11,7 +11,7 @@ defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'local_signin';
 
-$plugin->version = 2016040101;
+$plugin->version = 2019083000;
 $plugin->maturity = MATURITY_ALPHA;
 
 $plugin->requires = 2014051200;

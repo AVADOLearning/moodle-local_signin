@@ -113,14 +113,20 @@ if (!$helper->is_auth_global_vars_populated()) {
         $passwordform->is_validated()) {
         $values = $passwordform->get_data();
         $helper->set_passform_params_in_auth_global_vars($values);
-
-        if (!empty($values->rememberme)) {
-            setcookie($cookiename, rc4encrypt($values->username), time() + (DAYSECS * 60), $CFG->sessioncookiepath,$CFG->sessioncookiedomain, is_moodle_cookie_secure(), $CFG->cookiehttponly);
-        }
     }
 }
 
 if ($helper->authenticate()) {
+    if ($helper->is_user_already_loggedin()) {
+        //Setting loginas cookie
+        $context = context_system::instance();
+        $genratecookie = has_capability('local/signin:manage', $context);
+
+        if (!empty($values->rememberme) && ($genratecookie)) {
+            setcookie($cookiename, rc4encrypt($values->username), time() + (DAYSECS * 60), $CFG->sessioncookiepath,$CFG->sessioncookiedomain, is_moodle_cookie_secure(), $CFG->cookiehttponly);
+        }
+    }
+
     if ($helper->user_needs_to_change_their_password()) {
         // Gives the user a chance to change their password
         redirect(new moodle_url('/local/signin/expired_user.php'));
