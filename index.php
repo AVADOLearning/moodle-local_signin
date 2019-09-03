@@ -63,6 +63,9 @@ $passwordform = new password_form($helper->get_login_url());
 
 $username = '';
 
+global $CFG;
+$cookiename = 'REMEMBERUNAME';
+
 // If true, an auth plugin has filled out the form on behalf of the user
 // See auth_plugin_bootstrapper function
 if (!$helper->is_auth_global_vars_populated()) {
@@ -94,6 +97,18 @@ if (!$helper->is_auth_global_vars_populated()) {
         ));
     }
 
+    if (!empty($CFG->rememberusername)) {
+        if(isset($_COOKIE[$cookiename])) {
+            $username = rc4decrypt($_COOKIE[$cookiename]);
+        }
+        global $frm;
+        $frm->username = $username;
+        $passwordform->set_data(array(
+            'username' => $username,
+            'rememberme' => 1,
+        ));
+    }
+
     if ($passwordform->is_submitted() &&
         $passwordform->is_validated()) {
         $values = $passwordform->get_data();
@@ -102,6 +117,16 @@ if (!$helper->is_auth_global_vars_populated()) {
 }
 
 if ($helper->authenticate()) {
+    if ($helper->is_user_already_loggedin()) {
+        //Setting loginas cookie
+        $context = context_system::instance();
+        $genratecookie = has_capability('local/signin:manage', $context);
+
+        if (!empty($values->rememberme) && ($genratecookie)) {
+            setcookie($cookiename, rc4encrypt($values->username), time() + (DAYSECS * 60), $CFG->sessioncookiepath,$CFG->sessioncookiedomain, is_moodle_cookie_secure(), $CFG->cookiehttponly);
+        }
+    }
+
     if ($helper->user_needs_to_change_their_password()) {
         // Gives the user a chance to change their password
         redirect(new moodle_url('/local/signin/expired_user.php'));

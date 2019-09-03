@@ -190,9 +190,9 @@ class login_helper {
     public function user_needs_to_restore_account() {
         global $frm, $user;
         if (!isset($user) &&
-             isset($frm) &&
-             isset($frm->username) &&
-             is_restored_user($frm->username)) {
+            isset($frm) &&
+            isset($frm->username) &&
+            is_restored_user($frm->username)) {
             return array(true, $frm->username);
         } else {
             return array(false, '');
@@ -392,7 +392,7 @@ class login_helper {
         global $USER;
 
         return new moodle_url(
-                $this->get_login_url(), array('testsession' => $USER->id));
+            $this->get_login_url(), array('testsession' => $USER->id));
     }
 
     /**
@@ -530,5 +530,11 @@ class login_helper {
         global $frm;
         $frm = null;
         set_moodle_cookie('');
+
+        $cookiename = 'REMEMBERUNAME';
+        if(isset($_COOKIE[$cookiename])) {
+            unset($_COOKIE[$cookiename]);
+            setcookie($cookiename, '', time() - HOURSECS, '/');
+        }
     }
 }
