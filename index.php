@@ -26,6 +26,13 @@ redirect_if_major_upgrade_required();
 
 $helper = new login_helper();
 
+if (isset($_COOKIE['remembermesomedays'])) {
+    $storedCookieValue = $_COOKIE['remembermesomedays'];
+    $storedUserCookieValue = rc4decrypt($storedCookieValue);
+    $userDetails = $DB->get_record('user', ['id' => $storedUserCookieValue]);
+    complete_user_login($userDetails);
+}
+
 $helper->handle_cancel_request();
 
 // Will redirect at this point if the user is logged in
@@ -73,7 +80,8 @@ if (!$helper->is_auth_global_vars_populated()) {
 
     // Form submissions go here
     if ($usernameform->is_submitted() &&
-        $usernameform->is_validated()) {
+        $usernameform->is_validated()
+    ) {
         $values = $usernameform->get_data();
         $helper->set_userform_params_in_auth_global_vars($values);
 
@@ -98,7 +106,7 @@ if (!$helper->is_auth_global_vars_populated()) {
     }
 
     if (!empty($CFG->rememberusername)) {
-        if(isset($_COOKIE[$cookiename])) {
+        if (isset($_COOKIE[$cookiename])) {
             $username = rc4decrypt($_COOKIE[$cookiename]);
         }
         global $frm;
@@ -110,7 +118,8 @@ if (!$helper->is_auth_global_vars_populated()) {
     }
 
     if ($passwordform->is_submitted() &&
-        $passwordform->is_validated()) {
+        $passwordform->is_validated()
+    ) {
         $values = $passwordform->get_data();
         $helper->set_passform_params_in_auth_global_vars($values);
     }
@@ -123,7 +132,15 @@ if ($helper->authenticate()) {
         $genratecookie = has_capability('local/signin:manage', $context);
 
         if (!empty($values->rememberme) && ($genratecookie)) {
-            setcookie($cookiename, rc4encrypt($values->username), time() + (DAYSECS * 60), $CFG->sessioncookiepath,$CFG->sessioncookiedomain, is_moodle_cookie_secure(), $CFG->cookiehttponly);
+            setcookie($cookiename, rc4encrypt($values->username), time() + (DAYSECS * 60), $CFG->sessioncookiepath,
+                $CFG->sessioncookiedomain, is_moodle_cookie_secure(), $CFG->cookiehttponly);
+        }
+
+        if (isset($values->remembermedays)) {
+            global $USER;
+            $userDetailsArray = $USER->id;
+            setcookie('remembermesomedays', rc4encrypt($userDetailsArray), time() + (DAYSECS * 30),
+                $CFG->sessioncookiepath, $CFG->sessioncookiedomain, is_moodle_cookie_secure(), $CFG->cookiehttponly);
         }
     }
 
@@ -152,8 +169,9 @@ if ($helper->authenticate()) {
         echo $OUTPUT->header();
         echo $OUTPUT->heading(get_string('restoredaccount'));
         echo $OUTPUT->box(get_string('restoredaccountinfo'), 'generalbox boxaligncenter');
-        require_once($CFG->dirroot.'/login/restored_password_form.php'); // Use our "supplanter" login_forgot_password_form. MDL-20846
-        $login_forgot_password_frm = new login_forgot_password_form($CFG->wwwroot . '/login/forgot_password.php', array('username' => $username));
+        require_once($CFG->dirroot . '/login/restored_password_form.php'); // Use our "supplanter" login_forgot_password_form. MDL-20846
+        $login_forgot_password_frm = new login_forgot_password_form($CFG->wwwroot . '/login/forgot_password.php',
+            array('username' => $username));
         echo $renderer->forgot_password_form($login_forgot_password_frm);
         echo $OUTPUT->footer();
         die;
