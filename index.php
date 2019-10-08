@@ -138,8 +138,8 @@ if ($helper->authenticate()) {
 
         if (isset($values->remembermedays)) {
             global $USER;
-            $userIdDetails = $USER->id;
-            setcookie('remembermesomedays', rc4encrypt($userIdDetails), time() + (DAYSECS * 30),
+            $userId = $USER->id;
+            setcookie('remembermesomedays', rc4encrypt($userId), time() + (DAYSECS * 30),
                 $CFG->sessioncookiepath, $CFG->sessioncookiedomain, is_moodle_cookie_secure(), $CFG->cookiehttponly);
         }
     }
