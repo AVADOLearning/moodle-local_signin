@@ -107,6 +107,7 @@ $string['form_username_button_label']      = 'Proceed';
 $string['form_username_button_class']      = 'waves-button-input';
 $string['form_username_remusername_class'] = 'rememberpass';
 $string['form_username_remusername_label'] = 'Remember username';
+$string['form_username_remusernamedays_label'] = 'Remember login for 30 days';
 $string['form_username_not_provided']      = 'Please provide a username.';
 $string['form_username_not_found_valid']   = 'This username does not exist or it is not active.';
 

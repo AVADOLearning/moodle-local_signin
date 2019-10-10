@@ -16,37 +16,49 @@ use moodleform;
 
 defined('MOODLE_INTERNAL') || die;
 
-class password_form extends no_sesskey_form {
+class password_form extends no_sesskey_form
+{
     /**
      * @override \moodleform
      */
-    public function definition() {
+    public function definition()
+    {
         global $frm;
 
-        $mform  = $this->_form;
+        $mform = $this->_form;
 
         $username = '';
         if (isset($frm) && isset($frm->username) && $frm->username) {
             $username = $frm->username;
         }
-        $user_attributes = array('placeholder'   => util::lang_string('form_username_placeholder'),
-                                 'additionalcss' => util::lang_string('form_username_button_class'),
-                                 'readonly'      => '',
-                                 'value'         => $username);
+        $user_attributes = array(
+            'placeholder' => util::lang_string('form_username_placeholder'),
+            'additionalcss' => util::lang_string('form_username_button_class'),
+            'readonly' => '',
+            'value' => $username
+        );
         $mform->addElement('text', 'username', util::lang_string('form_username_label'), $user_attributes);
         $mform->setType('username', PARAM_USERNAME);
 
-        $pass_attributes = array('placeholder'   => util::lang_string('form_password_placeholder'),
-                                 'additionalcss' => util::lang_string('form_password_button_class'),
-                                 'autofocus'     => '');
+        $pass_attributes = array(
+            'placeholder' => util::lang_string('form_password_placeholder'),
+            'additionalcss' => util::lang_string('form_password_button_class'),
+            'autofocus' => ''
+        );
         $mform->addElement('password', 'password', util::lang_string('form_password_label'), $pass_attributes);
         $mform->setType('password', PARAM_RAW);
 
-        $mform->addElement('hidden', 'rememberme', 0, array ('id' => 'check_rememberme'));
+        $mform->addElement('hidden', 'rememberme', 0, array('id' => 'check_rememberme'));
         $mform->setType('rememberme', PARAM_INT);
 
+        $mform->addElement('html', sprintf('<div class="%s">', util::lang_string('form_username_remusername_class')));
+        $mform->addElement('checkbox', 'remembermedays', '', util::lang_string('form_username_remusernamedays_label'),
+            array('id' => 'check_remembermedays'));
+        $mform->addElement('html', '</div>');
+
         $submit_attributes = array('additionalcss' => util::lang_string('form_password_button_class'));
-        $mform->addElement('submit', 'submitpassword', util::lang_string('form_password_button_label'), $submit_attributes);
+        $mform->addElement('submit', 'submitpassword', util::lang_string('form_password_button_label'),
+            $submit_attributes);
 
         $mform->addElement('html', sprintf(util::ELEMENT_WRAPPER,
             util::lang_string('form_password_changeusername_class'),
